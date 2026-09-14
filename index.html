@@ -153,11 +153,23 @@ tr.free td{color:var(--orange);font-weight:700}
 .map-embed { width: 100%; height: 250px; border-radius: 12px; border: none; margin-bottom: 1.5rem; background: var(--rule); }
 
 /* ---------- footer ---------- */
-footer{padding:1.9rem 0 2.4rem;border-top:1px solid var(--rule);
-  font-size:.95rem;color:var(--ink-soft)}
-.er{border-left:4px solid var(--alert);padding:.15rem 0 .15rem .85rem;margin:0 0 1.3rem;
-  color:var(--ink)}
-.er b{color:var(--alert)}
+.site-footer{padding:2.1rem 0 2.5rem;border-top:1px solid var(--rule);margin-top:1.8rem}
+.footer-grid{display:grid;gap:1.4rem}
+.footer-brand h3,.footer-column h4{margin:0 0 .75rem;font-family:"Barlow Condensed",sans-serif;
+  font-weight:700;letter-spacing:.01em;color:var(--ink)}
+.footer-brand h3{font-size:2rem;line-height:1}
+.footer-brand p,.footer-column p,.footer-column li,.footer-bottom p{margin:0;color:var(--ink-soft);font-size:.96rem;line-height:1.6}
+.footer-column ul{list-style:none;margin:0;padding:0}
+.footer-column li + li{margin-top:.35rem}
+.footer-column a{color:var(--ink);text-decoration:none}
+.footer-column a:hover{color:var(--signal)}
+.footer-bottom{padding-top:1.2rem;margin-top:1.2rem;border-top:1px solid var(--rule);display:grid;gap:.45rem}
+.footer-alert{margin-top:1.25rem;padding:.85rem 1rem;border-left:4px solid var(--alert);background:rgba(142,43,27,.06);border-radius:0 10px 10px 0;color:var(--ink)}
+.footer-alert strong{color:var(--alert)}
+@media (min-width:700px){
+  .footer-grid{grid-template-columns:1.5fr 1fr 1fr;align-items:start}
+  .footer-bottom{grid-template-columns:1fr 1fr;gap:1rem}
+}
 
 /* ---------- sticky bar ---------- */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--signal);
@@ -182,7 +194,7 @@ footer{padding:1.9rem 0 2.4rem;border-top:1px solid var(--rule);
   "telephone": "+16107755521",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "2211 Quarry Drive, Suite E-65",
+    "streetAddress": "2211 Quarry Drive, Suite E-67",
     "addressLocality": "Reading",
     "addressRegion": "PA",
     "postalCode": "19609",
@@ -359,10 +371,39 @@ footer{padding:1.9rem 0 2.4rem;border-top:1px solid var(--rule);
     <table class="hours" id="hours"></table>
   </section>
 
-  <footer>
-    <p class="er"><b>Go to an emergency room instead</b> if the swelling is spreading toward your eye or down your neck, if you're having trouble breathing or swallowing, or if you can't open your mouth.</p>
-    <p>Berks Urgent Dental is a registered fictitious name of Shad J Lewis DMD MA LLC.
-    Emergency and same-day dental care for Reading, West Lawn, Wyomissing, Sinking Spring, Shillington, Mohnton and the surrounding Berks County area.</p>
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Berks Urgent Dental</h3>
+        <p>Same-day dental care for tooth pain, broken teeth, extractions, and urgent dental problems in Reading and across Berks County.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Call or visit</h4>
+        <ul>
+          <li><a href="tel:+16107755521">(610) 775-5521</a></li>
+          <li><a href="https://maps.google.com/?q=2211+Quarry+Drive+Reading+PA+19609" target="_blank" rel="noopener">2211 Quarry Drive, Suite E-67<br>Reading, PA 19609</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Hours</h4>
+        <ul>
+          <li>Mon–Thu: 8:00am–5:00pm</li>
+          <li>Fri: 8:00am–3:00pm</li>
+          <li>Sat–Sun: Closed</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>Berks Urgent Dental is a registered fictitious name of Shad J Lewis DMD MA LLC.</p>
+      <p>Emergency and same-day dental care for Reading, West Lawn, Wyomissing, Sinking Spring, Shillington, Mohnton, and the surrounding Berks County area.</p>
+    </div>
+
+    <div class="footer-alert">
+      <strong>Go to an emergency room instead</strong> if the swelling is spreading toward your eye or down your neck, if you're having trouble breathing or swallowing, or if you can't open your mouth.
+    </div>
   </footer>
 
 </div>
