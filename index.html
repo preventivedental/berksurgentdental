@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Berks Urgent Dental — Tooth pain seen today | Reading, PA</title>
 <meta name="description" content="Same-day dental care in Reading, PA. No charge for a look at the tooth that's bothering you. Extractions, broken teeth, abscess. Posted prices. No treatment plan for things you didn't come in for.">
 <link rel="canonical" href="https://berksurgentdental.com/">
@@ -434,7 +437,7 @@ tr.free td{color:var(--orange);font-weight:700}
    ===================================================================== */
 var CONFIG = {
 
-  updatesFile: "https://berksurgentdental.com/live-updates.txt",    // optional daily text overrides
+  updatesFile: "https://berksurgentdental.com/live-updates.txt?v=20260916",    // optional daily text overrides
 
   suite: "67",                       // suite letter/number on the door
 
@@ -581,22 +584,24 @@ var CONFIG = {
   }
 
   function loadConfig() {
+    var updatesUrl = new URL(CONFIG.updatesFile, window.location.href).href;
+
     if (!window.fetch || !CONFIG.updatesFile) {
-      return Promise.resolve({ config: CONFIG, loaded: false, reason: "Open the hosted site URL so live-updates.txt can load." });
+      return Promise.resolve({ config: CONFIG, loaded: false, reason: "Open the hosted site URL so live-updates.txt can load.", updatesUrl: updatesUrl });
     }
 
-    return fetch(CONFIG.updatesFile, { cache: "no-store" })
+    return fetch(updatesUrl, { cache: "no-store" })
       .then(function (resp) {
         if (!resp.ok) {
-          throw new Error("Could not load " + CONFIG.updatesFile + " (HTTP " + resp.status + ")");
+          throw new Error("Could not load " + updatesUrl + " (HTTP " + resp.status + ")");
         }
         return resp.text();
       })
       .then(function (text) {
-        return { config: applyTextOverrides(CONFIG, text), loaded: true, reason: "Hours loaded from live-updates.txt." };
+        return { config: applyTextOverrides(CONFIG, text), loaded: true, reason: "Hours loaded from live-updates.txt.", updatesUrl: updatesUrl };
       })
       .catch(function () {
-        return { config: CONFIG, loaded: false, reason: "Could not load live-updates.txt. Open the hosted site URL, and make sure live-updates.txt is published beside index.html." };
+        return { config: CONFIG, loaded: false, reason: "Could not load live-updates.txt. Open the hosted site URL, and make sure live-updates.txt is published beside index.html.", updatesUrl: updatesUrl };
       });
   }
 
@@ -648,7 +653,7 @@ var CONFIG = {
 
   var configNote = document.getElementById("configNote");
   if (configNote) {
-    configNote.textContent = result.loaded ? result.reason : result.reason;
+    configNote.textContent = result.reason + " Request: " + (result.updatesUrl || CONFIG.updatesFile);
   }
 
   // hours table
