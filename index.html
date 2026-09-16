@@ -49,6 +49,8 @@ p{margin:0 0 .9rem}
   font-weight:600;font-size:1rem}
 .status[data-state="open"]{color:var(--green)}
 .dot{width:.66rem;height:.66rem;border-radius:50%;background:var(--green);flex:none}
+.status[data-state="soon"]{color:var(--orange)}
+.status[data-state="soon"] .dot{background:var(--orange)}
 .status[data-state="closed"]{color:var(--alert)}
 .status[data-state="closed"] .dot{background:var(--alert)}
 .announcement{
@@ -490,7 +492,9 @@ var CONFIG = {
   // Optional announcement and status text templates.
   // Use {time} and {next} in messages.
   announcement: "",
+  closeSoonMinutes: 60,
   statusOpen: "Open now until {time} - call and come in",
+  statusSoon: "Closing soon at {time} - call now",
   statusClosed: "Closed now - opens {next}",
   statusClosedNoNext: "Closed now"
 };
@@ -601,10 +605,16 @@ var CONFIG = {
   var t = siteConfig.hours[todayKey];
   var mins = now.getHours() * 60 + now.getMinutes();
   var open = !!t && mins >= t[0] * 60 && mins < t[1] * 60;
+  var closeMins = t ? (t[1] * 60 - mins) : 0;
+  var soonWindow = typeof siteConfig.closeSoonMinutes === "number" ? siteConfig.closeSoonMinutes : 60;
+  var closingSoon = open && closeMins > 0 && closeMins <= soonWindow;
   var box = document.getElementById("status");
   var label = document.getElementById("statusText");
 
-  if (open) {
+  if (closingSoon) {
+    box.setAttribute("data-state", "soon");
+    label.textContent = siteConfig.statusSoon.replace("{time}", fmt(t[1]));
+  } else if (open) {
     box.setAttribute("data-state", "open");
     label.textContent = siteConfig.statusOpen.replace("{time}", fmt(t[1]));
   } else {
