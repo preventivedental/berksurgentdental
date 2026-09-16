@@ -60,6 +60,14 @@ p{margin:0 0 .9rem}
   font-size:.95rem;
   font-weight:600;
 }
+.config-note{
+  margin:0 0 .9rem;
+  padding:.5rem .65rem;
+  border-left:4px solid var(--rule);
+  background:rgba(255,255,255,.42);
+  color:var(--ink-soft);
+  font-size:.88rem;
+}
 
 /* ---------- hero ---------- */
 h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;
@@ -245,6 +253,7 @@ tr.free td{color:var(--orange);font-weight:700}
 <div class="wrap">
 
   <p class="status" id="status" data-state="closed"><span class="dot"></span><span id="statusText">Call to check today's openings</span></p>
+  <p class="config-note" id="configNote">Loading hours from live-updates.txt...</p>
   <p class="announcement" id="announcement" hidden></p>
 
   <h1>When Advil stops working.</h1>
@@ -573,23 +582,26 @@ var CONFIG = {
 
   function loadConfig() {
     if (!window.fetch || !CONFIG.updatesFile) {
-      return Promise.resolve(CONFIG);
+      return Promise.resolve({ config: CONFIG, loaded: false, reason: "This browser cannot load live-updates.txt from the current page context." });
     }
 
     return fetch(CONFIG.updatesFile, { cache: "no-store" })
       .then(function (resp) {
-        if (!resp.ok) return "";
+        if (!resp.ok) {
+          throw new Error("Could not load " + CONFIG.updatesFile + " (HTTP " + resp.status + ")");
+        }
         return resp.text();
       })
       .then(function (text) {
-        return applyTextOverrides(CONFIG, text);
+        return { config: applyTextOverrides(CONFIG, text), loaded: true, reason: "Hours loaded from live-updates.txt." };
       })
       .catch(function () {
-        return CONFIG;
+        return { config: CONFIG, loaded: false, reason: "Could not load live-updates.txt. If you opened the page directly from disk (file:///), the browser may block the file fetch. Use the live site or a local web server." };
       });
   }
 
-  function run(siteConfig) {
+  function run(result) {
+  var siteConfig = result.config;
 
   // fees
   var feeRows = document.getElementById("feeRows");
@@ -632,6 +644,11 @@ var CONFIG = {
   if (siteConfig.announcement) {
     ann.textContent = siteConfig.announcement;
     ann.hidden = false;
+  }
+
+  var configNote = document.getElementById("configNote");
+  if (configNote) {
+    configNote.textContent = result.loaded ? result.reason : result.reason;
   }
 
   // hours table
