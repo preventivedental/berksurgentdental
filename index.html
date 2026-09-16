@@ -198,6 +198,50 @@ tr.free td{color:var(--orange);font-weight:700}
   .bar{display:none}
   body{padding-bottom:0}
 }
+
+/* ---------- print ---------- */
+@page{size:Letter;margin:.65in}
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{
+    background:#fff!important;
+    color:#111!important;
+    font-size:10.75pt;
+    line-height:1.45;
+    padding:0!important;
+  }
+  .wrap,.site-footer .wrap{
+    max-width:7.1in!important;
+    margin:0 auto!important;
+    padding:0!important;
+  }
+  .mast,.bar,.status,.announcement,.row2,.bookNote,.map-embed,.footer-alert{display:none!important}
+  .call{
+    background:none!important;
+    color:#111!important;
+    border:1px solid #111;
+    border-radius:0;
+    font-size:15pt;
+    margin:0 0 .12in;
+    padding:.12in;
+  }
+  .call span{font-size:9.5pt;opacity:1}
+  .promise,.site-footer{
+    background:#fff!important;
+    color:#111!important;
+    margin-top:.18in;
+    padding:.08in 0;
+  }
+  .footer-col p,.footer-col li,.footer-copy,.footer-col a,.footer-copy a{color:#111!important}
+  .footer-grid{grid-template-columns:1fr 1fr 1fr;gap:.2in}
+  .footer-logo{width:1.9in}
+  h1{font-size:30pt;line-height:.95;margin:.08in 0 .12in}
+  h2{font-size:16pt;line-height:1.08;margin:0 0 .08in}
+  p,li,td,th,dd,.note{font-size:10.75pt}
+  section{padding:.12in 0;border-top:1px solid #bbb}
+  table,.hours{page-break-inside:avoid}
+  a,a:visited{color:#111!important;text-decoration:none}
+}
 </style>
 
 <script type="application/ld+json">
