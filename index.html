@@ -16,7 +16,7 @@
   For quick daily edits, use live-updates.txt in this same folder.
   You can change open/closed times and post an announcement there.
 
-     Still to decide: the five fees, the suite letter, your hours,
+    Still to decide: the fee rows, the suite letter, your hours,
      and the Maps link (paste it once the listing verifies).
      ====================================================================== -->
 
@@ -316,11 +316,7 @@ tr.free td{color:var(--orange);font-weight:700}
       <thead>
         <tr><th scope="col">Service</th><th scope="col" style="text-align:right">Fee</th></tr>
       </thead>
-      <tbody>
-        <tr class="free"><td>A look at the tooth</td><td class="fee">No charge</td></tr>
-        <tr><td>Exam and x-ray on its own<span class="sub">If you just want to know what's going on</span><span class="code">D0140, D0220</span></td><td class="fee" data-fee="exam"></td></tr>
-        <tr><td>Taking the tooth out<span class="sub">Exam, x-ray and numbing included</span><span class="code">D0140, D0220, D7140</span></td><td class="fee" data-fee="ext"></td></tr>
-      </tbody>
+      <tbody id="feeRows"></tbody>
     </table>
     <p class="note">One price, nothing added on afterward. Not every tooth is the same, though — one that's broken off at the gumline is more work than one that isn't, and a crown or a filling depends on what's left to work with, so those run more. Whatever yours turns out to be, you'll have the number in writing before anything starts, and you can take it home and think about it.</p>
     
@@ -456,12 +452,36 @@ var CONFIG = {
   photo: "https://berksurgentdental.com/lewis.jpg",
 
   // Fees. Write them exactly as you want them to appear on the page.
-  fees: {
-    exam:  "$150",
-    ext:   "$395",
-    surg:  "from $473",
-    fill:  "from $267"
-  },
+  fees: [
+    {
+      key: "exam",
+      label: "Exam and x-ray on its own",
+      sublabel: "If you just want to know what's going on",
+      code: "D0140, D0220",
+      amount: "$150"
+    },
+    {
+      key: "ext",
+      label: "Taking the tooth out",
+      sublabel: "Exam, x-ray and numbing included",
+      code: "D0140, D0220, D7140",
+      amount: "from $395"
+    },
+    {
+      key: "surg",
+      label: "Surgical extraction",
+      sublabel: "For teeth that need a little more work",
+      code: "D7210",
+      amount: "from $473"
+    },
+    {
+      key: "fill",
+      label: "Fillings",
+      sublabel: "When the tooth can be repaired instead",
+      code: "D2330, D2391",
+      amount: "from $267"
+    }
+  ],
 
   // Hours. Use 24-hour numbers. Set a day to null if you're closed.
   hours: {
@@ -512,12 +532,12 @@ var CONFIG = {
       maps: baseConfig.maps,
       booking: baseConfig.booking,
       photo: baseConfig.photo,
-      fees: {
-        exam: baseConfig.fees.exam,
-        ext: baseConfig.fees.ext,
-        surg: baseConfig.fees.surg,
-        fill: baseConfig.fees.fill
-      },
+      fees: [
+        { key: baseConfig.fees[0].key, label: baseConfig.fees[0].label, sublabel: baseConfig.fees[0].sublabel, code: baseConfig.fees[0].code, amount: baseConfig.fees[0].amount },
+        { key: baseConfig.fees[1].key, label: baseConfig.fees[1].label, sublabel: baseConfig.fees[1].sublabel, code: baseConfig.fees[1].code, amount: baseConfig.fees[1].amount },
+        { key: baseConfig.fees[2].key, label: baseConfig.fees[2].label, sublabel: baseConfig.fees[2].sublabel, code: baseConfig.fees[2].code, amount: baseConfig.fees[2].amount },
+        { key: baseConfig.fees[3].key, label: baseConfig.fees[3].label, sublabel: baseConfig.fees[3].sublabel, code: baseConfig.fees[3].code, amount: baseConfig.fees[3].amount }
+      ],
       hours: {
         sun: baseConfig.hours.sun,
         mon: baseConfig.hours.mon,
@@ -559,6 +579,26 @@ var CONFIG = {
     return out;
   }
 
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function feeRowHtml(label, sublabel, code, amount) {
+    var text = String(amount || "").trim();
+    if (!text) return "";
+
+    return '<tr><td>' +
+      escapeHtml(label) +
+      (sublabel ? '<span class="sub">' + escapeHtml(sublabel) + '</span>' : '') +
+      (code ? '<span class="code">' + escapeHtml(code) + '</span>' : '') +
+      '</td><td class="fee">' + escapeHtml(text) + '</td></tr>';
+  }
+
   function loadConfig() {
     if (!window.fetch || !CONFIG.updatesFile) {
       return Promise.resolve(CONFIG);
@@ -580,9 +620,15 @@ var CONFIG = {
   function run(siteConfig) {
 
   // fees
-  for (var k in siteConfig.fees) {
-    var cell = document.querySelector('[data-fee="' + k + '"]');
-    if (cell) cell.textContent = siteConfig.fees[k];
+  var feeRows = document.getElementById("feeRows");
+  if (feeRows) {
+    var feeHtml = '';
+    feeHtml += '<tr class="free"><td>A look at the tooth</td><td class="fee">No charge</td></tr>';
+    for (var f = 0; f < siteConfig.fees.length; f++) {
+      var row = siteConfig.fees[f];
+      feeHtml += feeRowHtml(row.label, row.sublabel, row.code, row.amount);
+    }
+    feeRows.innerHTML = feeHtml;
   }
 
   // suite + maps
