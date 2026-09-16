@@ -410,11 +410,7 @@ tr.free td{color:var(--orange);font-weight:700}
 
         <div class="footer-col">
           <h4>Hours</h4>
-          <ul>
-            <li>Mon–Thu: 8:00am–5:00pm</li>
-            <li>Fri: 8:00am–3:00pm</li>
-            <li>Sat–Sun: Closed</li>
-          </ul>
+          <ul id="footerHours"></ul>
         </div>
       </div>
 
@@ -624,6 +620,19 @@ var CONFIG = {
             NAMES[key] + '</td><td>' + txt + '</td></tr>';
   }
   document.getElementById("hours").innerHTML = rows;
+
+  // footer hours list from the same source as the table
+  var footer = document.getElementById("footerHours");
+  if (footer) {
+    var items = "";
+    for (var f = 0; f < 7; f++) {
+      var dayKey = DAYS[f];
+      var dayHours = siteConfig.hours[dayKey];
+      var labelText = dayHours ? fmt(dayHours[0]) + " - " + fmt(dayHours[1]) : "Closed";
+      items += "<li>" + NAMES[dayKey] + ": " + labelText + "</li>";
+    }
+    footer.innerHTML = items;
+  }
 
   // open / closed light
   var t = siteConfig.hours[todayKey];

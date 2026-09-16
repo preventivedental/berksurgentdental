@@ -9,7 +9,7 @@
 sun=closed
 mon=8-17
 tue=8-17
-wed=8-17
+wed=7-11
 thu=8-17
 fri=8-15
 sat=closed
