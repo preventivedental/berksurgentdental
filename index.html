@@ -166,15 +166,11 @@ tr.free td{color:var(--orange);font-weight:700}
 
 /* ---------- footer ---------- */
 .site-footer{padding:2.4rem 0 2.6rem;margin-top:1.8rem;background:var(--ink);color:#EAF3FB}
-.site-footer .wrap{max-width:72rem;padding:0 1.25rem}
+.site-footer .wrap{max-width:84rem;padding:0 1.25rem}
 .footer-inner{display:grid;gap:1.35rem}
-.footer-brand{display:flex;align-items:center;gap:.8rem;margin-bottom:.2rem}
-.footer-mark{display:inline-block;background:var(--orange);color:#fff;padding:.35rem .5rem;border-radius:4px;
-  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;line-height:1}
-.footer-brand-name{font-family:"Barlow Condensed",sans-serif;font-size:2.1rem;line-height:.9;
-  letter-spacing:-.02em;font-weight:700;color:#fff}
-.footer-brand-name span{display:block;font-size:.72rem;letter-spacing:.12em;
-  text-transform:uppercase;opacity:.9;margin-top:.3rem}
+.footer-brand{margin-bottom:.2rem}
+.footer-logo{display:block;width:min(248px,100%)}
+.footer-logo svg{display:block;width:100%;height:auto;font-family:"Barlow Condensed",sans-serif}
 .footer-grid{display:grid;gap:1.2rem}
 .footer-col h4{margin:0 0 .45rem;font-family:"Barlow Condensed",sans-serif;
   font-weight:700;font-size:1.35rem;letter-spacing:.02em;color:#fff}
@@ -187,7 +183,13 @@ tr.free td{color:var(--orange);font-weight:700}
 .footer-alert{margin-top:.7rem;padding:.9rem 1rem;background:rgba(255,255,255,.04);border-left:4px solid #F0A57D;color:#F6F9FB}
 .footer-alert strong{color:#F9C9AD}
 @media (min-width:700px){
-  .footer-grid{grid-template-columns:1.35fr 1.2fr 1fr;align-items:start;gap:1.5rem}
+  .site-footer{padding:2.8rem 0 3rem}
+  .site-footer .wrap{padding:0 2rem}
+  .footer-grid{grid-template-columns:1.45fr 1.2fr 1fr;align-items:start;gap:2rem}
+}
+@media (max-width:699px){
+  .footer-grid{grid-template-columns:1fr}
+  .footer-col{padding-right:0}
 }
 
 /* ---------- sticky bar ---------- */
@@ -385,46 +387,51 @@ tr.free td{color:var(--orange);font-weight:700}
     <p><a href="" data-cfg="maps">Open in Maps</a> &nbsp;·&nbsp; Park right at the door, no charge</p>
     <table class="hours" id="hours"></table>
   </section>
+</div>
 
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <div class="footer-brand">
-        <div class="footer-mark">Urgent</div>
-        <div class="footer-brand-name">Berks<small>Dental</small></div>
-      </div>
-
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4>Call us</h4>
-          <p><a href="tel:+16107755521">(610) 775-5521</a></p>
-          <p>Same-day care for tooth pain, broken teeth, extractions, and urgent dental problems.</p>
-        </div>
-
-        <div class="footer-col">
-          <h4>Visit us</h4>
-          <ul>
-            <li><a href="https://maps.google.com/?q=2211+Quarry+Drive+Reading+PA+19609" target="_blank" rel="noopener">2211 Quarry Drive, Suite E-67</a></li>
-            <li>Reading, PA 19609</li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Hours</h4>
-          <ul id="footerHours"></ul>
-        </div>
-      </div>
-
-      <div class="footer-row">
-        <p class="footer-copy">Emergency and same-day dental care for Reading, West Lawn, Wyomissing, Sinking Spring, Shillington, Mohnton, and the surrounding Berks County area.</p>
-      </div>
-
-      <div class="footer-alert">
-        <strong>Go to an emergency room instead</strong> if the swelling is spreading toward your eye or down your neck, if you're having trouble breathing or swallowing, or if you can't open your mouth.
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo" aria-hidden="true">
+        <svg viewBox="0 0 340 180" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="61" width="340" height="57" fill="#C25008"/>
+          <text x="40" y="50" textLength="260" lengthAdjust="spacing" font-size="42" font-weight="700" fill="#fff">BERKS</text>
+          <text x="40" y="108" textLength="260" lengthAdjust="spacing" font-size="52" font-weight="800" fill="#fff">URGENT</text>
+          <text x="40" y="160" textLength="260" lengthAdjust="spacing" font-size="42" font-weight="700" fill="#fff">DENTAL</text>
+        </svg>
       </div>
     </div>
-  </footer>
 
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Call us</h4>
+        <p><a href="tel:+16107755521">(610) 775-5521</a></p>
+        <p>Same-day care for tooth pain, broken teeth, extractions, and urgent dental problems.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Visit us</h4>
+        <ul>
+          <li><a href="https://maps.google.com/?q=2211+Quarry+Drive+Reading+PA+19609" target="_blank" rel="noopener">2211 Quarry Drive, Suite E-67</a></li>
+          <li>Reading, PA 19609</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <ul id="footerHours"></ul>
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <p class="footer-copy">Emergency and same-day dental care for Reading, West Lawn, Wyomissing, Sinking Spring, Shillington, Mohnton, and the surrounding Berks County area.</p>
+    </div>
+
+    <div class="footer-alert">
+      <strong>Go to an emergency room instead</strong> if the swelling is spreading toward your eye or down your neck, if you're having trouble breathing or swallowing, or if you can't open your mouth.
+    </div>
 </div>
+</footer>
 
 <!-- STICKY MOBILE BUTTON (Was already here and works perfectly!) -->
 <div class="bar"><a href="tel:+16107755521">Call (610) 775-5521</a></div>
