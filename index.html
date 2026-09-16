@@ -3,9 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <title>Berks Urgent Dental — Tooth pain seen today | Reading, PA</title>
 <meta name="description" content="Same-day dental care in Reading, PA. No charge for a look at the tooth that's bothering you. Extractions, broken teeth, abscess. Posted prices. No treatment plan for things you didn't come in for.">
 <link rel="canonical" href="https://berksurgentdental.com/">
@@ -256,7 +253,6 @@ tr.free td{color:var(--orange);font-weight:700}
 <div class="wrap">
 
   <p class="status" id="status" data-state="closed"><span class="dot"></span><span id="statusText">Call to check today's openings</span></p>
-  <p class="config-note" id="configNote">Loading hours from live-updates.txt...</p>
   <p class="announcement" id="announcement" hidden></p>
 
   <h1>When Advil stops working.</h1>
@@ -433,11 +429,10 @@ tr.free td{color:var(--orange);font-weight:700}
 
 <script>
 /* =====================================================================
-   CONFIG — this is the only part you need to edit.
-   ===================================================================== */
+  CONFIG — this is the only part you need to edit.
+  Everything lives in this file now.
+  ===================================================================== */
 var CONFIG = {
-
-  updatesFile: "https://berksurgentdental.com/live-updates.txt?v=20260916",    // optional daily text overrides
 
   suite: "67",                       // suite letter/number on the door
 
@@ -472,11 +467,26 @@ var CONFIG = {
       code: "D7210",
       amount: "from $473"
     },
+    {
+      key: "fill",
+      label: "Fillings",
+      sublabel: "When the tooth can be repaired instead",
+      code: "D2330, D2391",
+      amount: "from $267"
+    }
 
   ],
 
-  // Hours are loaded from live-updates.txt.
-  hours: {},
+  // Hours. Use 24-hour numbers. Set a day to null if you're closed.
+  hours: {
+    sun: null,
+    mon: [8, 17],
+    tue: [8, 17],
+    wed: [7, 11],
+    thu: [8, 17],
+    fri: [8, 15],
+    sat: null
+  },
 
   // Optional announcement and status text templates.
   // Use {time} and {next} in messages.
@@ -496,71 +506,6 @@ var CONFIG = {
     var ampm = h >= 12 ? "pm" : "am";
     var hr = h % 12; if (hr === 0) hr = 12;
     return hr + ampm;
-  }
-
-  function parseRange(value) {
-    var v = String(value || "").trim().toLowerCase();
-    if (!v || v === "closed") return null;
-    var m = v.match(/^(\d{1,2})\s*[-–]\s*(\d{1,2})$/);
-    if (!m) return undefined;
-    var start = parseInt(m[1], 10);
-    var end = parseInt(m[2], 10);
-    if (isNaN(start) || isNaN(end) || start < 0 || end > 24 || end <= start) return undefined;
-    return [start, end];
-  }
-
-  function applyTextOverrides(baseConfig, text) {
-    var out = {
-      updatesFile: baseConfig.updatesFile,
-      suite: baseConfig.suite,
-      maps: baseConfig.maps,
-      booking: baseConfig.booking,
-      photo: baseConfig.photo,
-      fees: [
-        { key: baseConfig.fees[0].key, label: baseConfig.fees[0].label, sublabel: baseConfig.fees[0].sublabel, code: baseConfig.fees[0].code, amount: baseConfig.fees[0].amount },
-        { key: baseConfig.fees[1].key, label: baseConfig.fees[1].label, sublabel: baseConfig.fees[1].sublabel, code: baseConfig.fees[1].code, amount: baseConfig.fees[1].amount },
-        { key: baseConfig.fees[2].key, label: baseConfig.fees[2].label, sublabel: baseConfig.fees[2].sublabel, code: baseConfig.fees[2].code, amount: baseConfig.fees[2].amount },
-        { key: baseConfig.fees[3].key, label: baseConfig.fees[3].label, sublabel: baseConfig.fees[3].sublabel, code: baseConfig.fees[3].code, amount: baseConfig.fees[3].amount }
-      ],
-      hours: {
-        sun: baseConfig.hours.sun,
-        mon: baseConfig.hours.mon,
-        tue: baseConfig.hours.tue,
-        wed: baseConfig.hours.wed,
-        thu: baseConfig.hours.thu,
-        fri: baseConfig.hours.fri,
-        sat: baseConfig.hours.sat
-      },
-      announcement: baseConfig.announcement,
-      statusOpen: baseConfig.statusOpen,
-      statusClosed: baseConfig.statusClosed,
-      statusClosedNoNext: baseConfig.statusClosedNoNext
-    };
-
-    var lines = String(text || "").split(/\r?\n/);
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i].trim();
-      if (!line || line.charAt(0) === "#") continue;
-
-      var eq = line.indexOf("=");
-      if (eq === -1) continue;
-
-      var key = line.slice(0, eq).trim().toLowerCase();
-      var value = line.slice(eq + 1).trim();
-
-      if (DAYS.indexOf(key) !== -1) {
-        var parsed = parseRange(value);
-        if (parsed !== undefined) out.hours[key] = parsed;
-        continue;
-      }
-
-      if (key === "announcement") out.announcement = value;
-      if (key === "status_open") out.statusOpen = value || out.statusOpen;
-      if (key === "status_closed") out.statusClosed = value || out.statusClosed;
-      if (key === "status_closed_no_next") out.statusClosedNoNext = value || out.statusClosedNoNext;
-    }
-
-    return out;
   }
 
   function escapeHtml(value) {
@@ -583,30 +528,7 @@ var CONFIG = {
       '</td><td class="fee">' + escapeHtml(text) + '</td></tr>';
   }
 
-  function loadConfig() {
-    var updatesUrl = new URL(CONFIG.updatesFile, window.location.href).href;
-
-    if (!window.fetch || !CONFIG.updatesFile) {
-      return Promise.resolve({ config: CONFIG, loaded: false, reason: "Open the hosted site URL so live-updates.txt can load.", updatesUrl: updatesUrl });
-    }
-
-    return fetch(updatesUrl, { cache: "no-store" })
-      .then(function (resp) {
-        if (!resp.ok) {
-          throw new Error("Could not load " + updatesUrl + " (HTTP " + resp.status + ")");
-        }
-        return resp.text();
-      })
-      .then(function (text) {
-        return { config: applyTextOverrides(CONFIG, text), loaded: true, reason: "Hours loaded from live-updates.txt.", updatesUrl: updatesUrl };
-      })
-      .catch(function () {
-        return { config: CONFIG, loaded: false, reason: "Could not load live-updates.txt. Open the hosted site URL, and make sure live-updates.txt is published beside index.html.", updatesUrl: updatesUrl };
-      });
-  }
-
-  function run(result) {
-  var siteConfig = result.config;
+  function run(siteConfig) {
 
   // fees
   var feeRows = document.getElementById("feeRows");
@@ -649,11 +571,6 @@ var CONFIG = {
   if (siteConfig.announcement) {
     ann.textContent = siteConfig.announcement;
     ann.hidden = false;
-  }
-
-  var configNote = document.getElementById("configNote");
-  if (configNote) {
-    configNote.textContent = result.reason + " Request: " + (result.updatesUrl || CONFIG.updatesFile);
   }
 
   // hours table
@@ -709,7 +626,7 @@ var CONFIG = {
   }
   }
 
-  loadConfig().then(run);
+  run(CONFIG);
 })();
 </script>
 
