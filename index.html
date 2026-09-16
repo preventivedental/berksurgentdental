@@ -13,6 +13,9 @@
      Change a price or your hours there and the whole page updates,
      including the open/closed light and the hours table.
 
+  For quick daily edits, use live-updates.txt in this same folder.
+  You can change open/closed times and post an announcement there.
+
      Still to decide: the five fees, the suite letter, your hours,
      and the Maps link (paste it once the listing verifies).
      ====================================================================== -->
@@ -62,6 +65,15 @@ p{margin:0 0 .9rem}
 .dot{width:.66rem;height:.66rem;border-radius:50%;background:var(--green);flex:none}
 .status[data-state="closed"]{color:var(--alert)}
 .status[data-state="closed"] .dot{background:var(--alert)}
+.announcement{
+  margin:0 0 .6rem;
+  padding:.55rem .7rem;
+  border-left:4px solid var(--orange);
+  background:rgba(194,80,8,.09);
+  color:var(--ink);
+  font-size:.95rem;
+  font-weight:600;
+}
 
 /* ---------- hero ---------- */
 h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;
@@ -245,6 +257,7 @@ tr.free td{color:var(--orange);font-weight:700}
 <div class="wrap">
 
   <p class="status" id="status" data-state="closed"><span class="dot"></span><span id="statusText">Call to check today's openings</span></p>
+  <p class="announcement" id="announcement" hidden></p>
 
   <h1>When Advil stops working.</h1>
 
@@ -426,6 +439,8 @@ tr.free td{color:var(--orange);font-weight:700}
    ===================================================================== */
 var CONFIG = {
 
+  updatesFile: "live-updates.txt",     // optional daily text overrides
+
   suite: "67",                       // suite letter/number on the door
 
   maps:  "https://maps.google.com/?q=2211+Quarry+Drive+Reading+PA+19609",  // Updated directly to your map query
@@ -453,7 +468,14 @@ var CONFIG = {
     thu: [8, 17],
     fri: [8, 15],
     sat: null
-  }
+  },
+
+  // Optional announcement and status text templates.
+  // Use {time} and {next} in messages.
+  announcement: "",
+  statusOpen: "Open now until {time} - call and come in",
+  statusClosed: "Closed now - opens {next}",
+  statusClosedNoNext: "Closed now"
 };
 /* ===================================================================== */
 
@@ -468,23 +490,108 @@ var CONFIG = {
     return hr + ampm;
   }
 
+  function parseRange(value) {
+    var v = String(value || "").trim().toLowerCase();
+    if (!v || v === "closed") return null;
+    var m = v.match(/^(\d{1,2})\s*[-–]\s*(\d{1,2})$/);
+    if (!m) return undefined;
+    var start = parseInt(m[1], 10);
+    var end = parseInt(m[2], 10);
+    if (isNaN(start) || isNaN(end) || start < 0 || end > 24 || end <= start) return undefined;
+    return [start, end];
+  }
+
+  function applyTextOverrides(baseConfig, text) {
+    var out = {
+      updatesFile: baseConfig.updatesFile,
+      suite: baseConfig.suite,
+      maps: baseConfig.maps,
+      booking: baseConfig.booking,
+      photo: baseConfig.photo,
+      fees: {
+        exam: baseConfig.fees.exam,
+        ext: baseConfig.fees.ext,
+        surg: baseConfig.fees.surg,
+        fill: baseConfig.fees.fill
+      },
+      hours: {
+        sun: baseConfig.hours.sun,
+        mon: baseConfig.hours.mon,
+        tue: baseConfig.hours.tue,
+        wed: baseConfig.hours.wed,
+        thu: baseConfig.hours.thu,
+        fri: baseConfig.hours.fri,
+        sat: baseConfig.hours.sat
+      },
+      announcement: baseConfig.announcement,
+      statusOpen: baseConfig.statusOpen,
+      statusClosed: baseConfig.statusClosed,
+      statusClosedNoNext: baseConfig.statusClosedNoNext
+    };
+
+    var lines = String(text || "").split(/\r?\n/);
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line || line.charAt(0) === "#") continue;
+
+      var eq = line.indexOf("=");
+      if (eq === -1) continue;
+
+      var key = line.slice(0, eq).trim().toLowerCase();
+      var value = line.slice(eq + 1).trim();
+
+      if (DAYS.indexOf(key) !== -1) {
+        var parsed = parseRange(value);
+        if (parsed !== undefined) out.hours[key] = parsed;
+        continue;
+      }
+
+      if (key === "announcement") out.announcement = value;
+      if (key === "status_open") out.statusOpen = value || out.statusOpen;
+      if (key === "status_closed") out.statusClosed = value || out.statusClosed;
+      if (key === "status_closed_no_next") out.statusClosedNoNext = value || out.statusClosedNoNext;
+    }
+
+    return out;
+  }
+
+  function loadConfig() {
+    if (!window.fetch || !CONFIG.updatesFile) {
+      return Promise.resolve(CONFIG);
+    }
+
+    return fetch(CONFIG.updatesFile, { cache: "no-store" })
+      .then(function (resp) {
+        if (!resp.ok) return "";
+        return resp.text();
+      })
+      .then(function (text) {
+        return applyTextOverrides(CONFIG, text);
+      })
+      .catch(function () {
+        return CONFIG;
+      });
+  }
+
+  function run(siteConfig) {
+
   // fees
-  for (var k in CONFIG.fees) {
+  for (var k in siteConfig.fees) {
     var cell = document.querySelector('[data-fee="' + k + '"]');
-    if (cell) cell.textContent = CONFIG.fees[k];
+    if (cell) cell.textContent = siteConfig.fees[k];
   }
 
   // suite + maps
   var s = document.querySelectorAll('[data-cfg="suite"]');
-  s.forEach(el => el.textContent = CONFIG.suite);
+  s.forEach(el => el.textContent = siteConfig.suite);
   
   var m = document.querySelectorAll('[data-cfg="maps"]');
-  m.forEach(el => el.setAttribute("href", CONFIG.maps));
+  m.forEach(el => el.setAttribute("href", siteConfig.maps));
 
   // booking link — only shown if one is set
-  if (CONFIG.booking) {
+  if (siteConfig.booking) {
     var b = document.getElementById("book");
-    b.setAttribute("href", CONFIG.booking);
+    b.setAttribute("href", siteConfig.booking);
     b.setAttribute("target", "_blank");
     b.setAttribute("rel", "noopener");
     b.className = "alt book on";
@@ -492,10 +599,17 @@ var CONFIG = {
   }
 
   // optional photo
-  if (CONFIG.photo) {
+  if (siteConfig.photo) {
     var ph = document.getElementById("photo");
-    ph.src = CONFIG.photo;
+    ph.src = siteConfig.photo;
     ph.hidden = false;
+  }
+
+  // optional announcement from live-updates.txt
+  var ann = document.getElementById("announcement");
+  if (siteConfig.announcement) {
+    ann.textContent = siteConfig.announcement;
+    ann.hidden = false;
   }
 
   // hours table
@@ -504,7 +618,7 @@ var CONFIG = {
   var rows = "";
   for (var i = 1; i <= 7; i++) {
     var key = DAYS[i % 7];
-    var h = CONFIG.hours[key];
+    var h = siteConfig.hours[key];
     var txt = h ? fmt(h[0]) + " – " + fmt(h[1]) : "Closed";
     rows += '<tr' + (key === todayKey ? ' class="today"' : '') + '><td>' +
             NAMES[key] + '</td><td>' + txt + '</td></tr>';
@@ -512,7 +626,7 @@ var CONFIG = {
   document.getElementById("hours").innerHTML = rows;
 
   // open / closed light
-  var t = CONFIG.hours[todayKey];
+  var t = siteConfig.hours[todayKey];
   var mins = now.getHours() * 60 + now.getMinutes();
   var open = !!t && mins >= t[0] * 60 && mins < t[1] * 60;
   var box = document.getElementById("status");
@@ -520,20 +634,25 @@ var CONFIG = {
 
   if (open) {
     box.setAttribute("data-state", "open");
-    label.textContent = "Open now until " + fmt(t[1]) + " — call and come in";
+    label.textContent = siteConfig.statusOpen.replace("{time}", fmt(t[1]));
   } else {
     box.setAttribute("data-state", "closed");
     var next = null;
     for (var j = 0; j <= 7; j++) {
       var kk = DAYS[(now.getDay() + j) % 7];
-      var hh = CONFIG.hours[kk];
+      var hh = siteConfig.hours[kk];
       if (hh && !(j === 0 && mins >= hh[1] * 60)) {
         next = (j === 0 ? "today" : j === 1 ? "tomorrow" : NAMES[kk]) + " at " + fmt(hh[0]);
         break;
       }
     }
-    label.textContent = next ? "Closed now — opens " + next : "Closed now";
+    label.textContent = next
+      ? siteConfig.statusClosed.replace("{next}", next)
+      : siteConfig.statusClosedNoNext;
   }
+  }
+
+  loadConfig().then(run);
 })();
 </script>
 
