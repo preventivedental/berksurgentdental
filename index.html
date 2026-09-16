@@ -582,7 +582,7 @@ var CONFIG = {
 
   function loadConfig() {
     if (!window.fetch || !CONFIG.updatesFile) {
-      return Promise.resolve({ config: CONFIG, loaded: false, reason: "This browser cannot load live-updates.txt from the current page context." });
+      return Promise.resolve({ config: CONFIG, loaded: false, reason: "Open the hosted site URL so live-updates.txt can load." });
     }
 
     return fetch(CONFIG.updatesFile, { cache: "no-store" })
@@ -596,7 +596,7 @@ var CONFIG = {
         return { config: applyTextOverrides(CONFIG, text), loaded: true, reason: "Hours loaded from live-updates.txt." };
       })
       .catch(function () {
-        return { config: CONFIG, loaded: false, reason: "Could not load live-updates.txt. If you opened the page directly from disk (file:///), the browser may block the file fetch. Use the live site or a local web server." };
+        return { config: CONFIG, loaded: false, reason: "Could not load live-updates.txt. Open the hosted site URL, and make sure live-updates.txt is published beside index.html." };
       });
   }
 
