@@ -1,0 +1,22 @@
+<svg viewBox="0 0 400 400" role="img" aria-label="Berks Urgent Dental" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <path id="arcTop" d="M 55,200 A 145,145 0 1,1 345,200" fill="none"/>
+    <path id="arcBottom" d="M 55,200 A 145,145 0 1,0 345,200" fill="none"/>
+  </defs>
+
+  <!-- Square canvas; all key content sits inside the inscribed circle so a round avatar crop won't cut anything off -->
+  <rect x="0" y="0" width="400" height="400" fill="#0F2942"/>
+  <circle cx="200" cy="200" r="188" fill="none" stroke="#C25008" stroke-width="4"/>
+  <rect x="14" y="162" width="372" height="76" fill="#C25008"/>
+
+  <text x="200" y="215" text-anchor="middle" font-size="50" font-weight="800"
+        fill="#fff" font-family="Barlow Condensed, Arial, sans-serif" letter-spacing="1">URGENT</text>
+
+  <text font-size="34" font-weight="700" fill="#fff" font-family="Barlow Condensed, Arial, sans-serif" letter-spacing="3">
+    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">BERKS</textPath>
+  </text>
+
+  <text font-size="34" font-weight="700" fill="#fff" font-family="Barlow Condensed, Arial, sans-serif" letter-spacing="3">
+    <textPath href="#arcBottom" startOffset="50%" text-anchor="middle">DENTAL</textPath>
+  </text>
+</svg>
