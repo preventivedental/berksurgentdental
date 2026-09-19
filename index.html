@@ -506,6 +506,7 @@ tr.free td{color:var(--orange);font-weight:700}
 <!-- STICKY MOBILE BUTTON (Was already here and works perfectly!) -->
 <div class="bar"><a href="tel:+16107755521">Call (610) 775-5521</a></div>
 
+<script src="site-config.js"></script>
 <script>
 /* =====================================================================
   CONFIG — this is the only part you need to edit.
@@ -556,7 +557,7 @@ var CONFIG = {
   ],
 
   // Hours. Use 24-hour numbers. Set a day to null if you're closed.
-  hours: {
+  hours: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.hours) || {
     sun: null,
     mon: [8, 17],
     tue: [8, 17],
@@ -568,8 +569,8 @@ var CONFIG = {
 
   // Optional announcement and status text templates.
   // Use {time} and {next} in messages.
-  announcement: "",
-  closeSoonMinutes: 60,
+  announcement: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.announcement) || "",
+  closeSoonMinutes: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.closeSoonMinutes) || 60,
   statusOpen: "Open now until {time} - call and come in",
   statusSoon: "Closing soon at {time} - call now",
   statusClosed: "Closed now - opens {next}",

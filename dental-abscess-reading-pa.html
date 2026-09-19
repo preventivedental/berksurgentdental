@@ -6,6 +6,7 @@
 <title>Dental Abscess and Swelling Help in Reading, PA | Berks Urgent Dental</title>
 <meta name="description" content="Dental abscess or facial swelling in Reading, PA? Get urgent same-day dental guidance and treatment options from Berks Urgent Dental.">
 <link rel="canonical" href="https://berksurgentdental.com/dental-abscess-reading-pa.html">
+<script src="site-config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
@@ -138,7 +139,17 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
 (function () {
   var PAGE_SOURCE = "dental-abscess-reading-pa";
   var PAGE_INTENT = "dental-abscess";
-  var OFFICE_HOURS = {0: null, 1: [8, 17], 2: [8, 17], 3: [7, 11], 4: [8, 17], 5: [8, 15], 6: null};
+  var HOURS = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.hours) || {
+    sun: null,
+    mon: [8, 17],
+    tue: [8, 17],
+    wed: [7, 11],
+    thu: [9, 15],
+    fri: [9, 15],
+    sat: null
+  };
+  var CLOSE_SOON_MINUTES = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.closeSoonMinutes) || 60;
+  var DAY_KEYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
   var brandHome = document.getElementById("brandHome");
   var primary = document.getElementById("primaryCta");
@@ -153,10 +164,10 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
   }
 
   var now = new Date();
-  var todaysHours = OFFICE_HOURS[now.getDay()];
+  var todaysHours = HOURS[DAY_KEYS[now.getDay()]];
   var mins = now.getHours() * 60 + now.getMinutes();
   var isOpen = !!todaysHours && mins >= (todaysHours[0] * 60) && mins < (todaysHours[1] * 60);
-  var closesSoon = isOpen && (todaysHours[1] * 60 - mins <= 60);
+  var closesSoon = isOpen && (todaysHours[1] * 60 - mins <= CLOSE_SOON_MINUTES);
   var isMobile = window.matchMedia("(max-width: 760px)").matches;
 
   var sourceParams = "src=" + encodeURIComponent(PAGE_SOURCE) + "&intent=" + encodeURIComponent(PAGE_INTENT);
