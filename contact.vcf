@@ -3,6 +3,7 @@ VERSION:3.0
 ORG:Berks Urgent Dental
 TITLE:Dentist
 TEL;TYPE=WORK,VOICE:+16107755521
+TEL;TYPE=CELL:+16107755521
 EMAIL;TYPE=INTERNET:hello@berksurgentdental.com
 ADR;TYPE=WORK:;;2211 Quarry Drive Suite E-67;Reading;PA;19609;USA
 URL:https://berksurgentdental.com
