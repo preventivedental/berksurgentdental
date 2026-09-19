@@ -16,6 +16,7 @@
         content="No lectures. No upselling. Just same-day relief. Reach Berks Urgent Dental by phone, text, email, or directions." />
     <meta property="og:image" content="https://berksurgentdental.com/lewis.jpg" />
     <meta property="og:url" content="https://berksurgentdental.com/contact-card.html" />
+            <meta property="og:type" content="website" />
 
     <script type="application/ld+json">
         {
@@ -422,6 +423,7 @@
                 <a href="tel:+16107755521" class="button" id="callNowBtn">Call Now</a>
                 <a href="sms:+16107755521" class="button" id="textNowBtn">Text Now</a>
                 <a href="mailto:hello@berksurgentdental.com" class="button" id="emailBtn">Email</a>
+                <a href="/contact.vcf" class="button" id="saveContactBtn">Save Contact</a>
                 <a
                     href="https://maps.google.com/?q=2211+Quarry+Drive+Reading+PA+19609"
                     target="_blank"
@@ -436,10 +438,10 @@
                     Scan the code below
                 </p>
                 <img
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fberksurgentdental.com%2Fcontact-card.html"
-                    alt="Scan to open this card"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fberksurgentdental.com%2Fcontact.vcf"
+                    alt="Scan to save this contact"
                     class="qr-image" />
-                <p class="qr-url">https://berksurgentdental.com/contact-card.html</p>
+                <p class="qr-url">https://berksurgentdental.com/contact.vcf</p>
 
                 <div class="name-with-icon">
                     <strong>Shad Lewis, DMD</strong>
@@ -482,10 +484,10 @@
         <div class="share-popup-content">
             <h3 id="sharePopupTitle">Share this card</h3>
             <a
-                href="sms:?body=Check%20out%20Berks%20Urgent%20Dental%3A%20https%3A%2F%2Fberksurgentdental.com%2Fcontact-card.html"
+                href="sms:?body=Save%20Berks%20Urgent%20Dental%20to%20your%20contacts%3A%20https%3A%2F%2Fberksurgentdental.com%2Fcontact.vcf"
                 id="shareTextBtn">Share via Text</a>
             <a
-                href="mailto:?subject=Berks%20Urgent%20Dental&body=Same-day%20care%20in%20Reading%2C%20PA%3A%20https%3A%2F%2Fberksurgentdental.com%2Fcontact-card.html"
+                href="mailto:?subject=Berks%20Urgent%20Dental%20Contact&body=Save%20this%20contact%3A%20https%3A%2F%2Fberksurgentdental.com%2Fcontact.vcf"
                 id="shareEmailBtn">Share via Email</a>
             <button id="shareCloseBtn">Close</button>
         </div>
@@ -582,6 +584,7 @@
             const textNowBtn = document.getElementById("textNowBtn");
             const emailBtn = document.getElementById("emailBtn");
             const directionsBtn = document.getElementById("directionsBtn");
+            const saveContactBtn = document.getElementById("saveContactBtn");
             const shareCardBtn = document.getElementById("shareCardBtn");
             const aboutOpenBtn = document.getElementById("aboutOpenBtn");
             const aboutCloseBtn = document.getElementById("aboutCloseBtn");
@@ -610,6 +613,12 @@
             if (directionsBtn) {
                 directionsBtn.addEventListener("click", function () {
                     if (typeof gtag === "function") gtag("event", "click_directions");
+                });
+            }
+
+            if (saveContactBtn) {
+                saveContactBtn.addEventListener("click", function () {
+                    if (typeof gtag === "function") gtag("event", "click_save_contact");
                 });
             }
 

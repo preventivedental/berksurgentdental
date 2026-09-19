@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Lewis;Shad;;Dr.;DMD
+FN:Dr. Shad Lewis, DMD
+ORG:Berks Urgent Dental
+TITLE:Dentist
+TEL;TYPE=WORK,VOICE:+16107755521
+EMAIL;TYPE=INTERNET:hello@berksurgentdental.com
+ADR;TYPE=WORK:;;2211 Quarry Drive Suite E-67;Reading;PA;19609;USA
+URL:https://berksurgentdental.com
+NOTE:Same-day urgent dental care in Reading, PA. No lectures. No upselling. Just relief.
+END:VCARD
