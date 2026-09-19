@@ -571,10 +571,10 @@ var CONFIG = {
   // Use {time} and {next} in messages.
   announcement: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.announcement) || "",
   closeSoonMinutes: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.closeSoonMinutes) || 60,
-  statusOpen: "Open now until {time} - call and come in",
-  statusSoon: "Closing soon at {time} - call now",
-  statusClosed: "Closed now - opens {next}",
-  statusClosedNoNext: "Closed now"
+  statusOpen: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusOpen) || "Open now until {time} - call and come in",
+  statusSoon: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusSoon) || "Closing soon at {time} - call now",
+  statusClosed: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusClosed) || "Closed now - opens {next}",
+  statusClosedNoNext: (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusClosedNoNext) || "Closed now"
 };
 /* ===================================================================== */
 

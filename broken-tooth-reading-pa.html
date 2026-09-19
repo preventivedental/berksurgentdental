@@ -28,7 +28,8 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:"Barlow",syst
 .btn{display:inline-block;text-decoration:none;background:var(--signal);color:#fff;border:2px solid var(--signal);border-radius:12px;padding:.68rem .95rem;font-weight:700}
 .btn:hover{background:var(--signal-dk);border-color:var(--signal-dk)}
 .btn.alt{background:transparent;color:#fff;border-color:#86a8c4}
-.smart-note{margin:.8rem 0 0;color:#cfe1f1;font-size:.95rem;font-weight:600}
+.status-line{margin:.8rem 0 0;color:#cfe1f1;font-size:.95rem;font-weight:600}
+.announcement-line{margin:.55rem 0 0;padding:.5rem .65rem;border-left:4px solid #f0a57d;background:rgba(255,255,255,.08);color:#eaf3fb;font-size:.92rem}
 main{padding:1.4rem 0 2.6rem}
 .card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:1.15rem 1rem;margin:0 0 1rem}
 h2{margin:.15rem 0 .55rem;font-family:"Barlow Condensed",sans-serif;font-size:1.6rem;line-height:1.1}
@@ -93,7 +94,8 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
       <a class="btn" id="primaryCta" href="index.html">Get Same-Day Help</a>
       <a class="btn alt" id="secondaryCta" href="index.html">View Hours, Pricing, and Directions</a>
     </div>
-    <p class="smart-note" id="smartNote"></p>
+    <p class="status-line" id="statusLine"></p>
+    <p class="announcement-line" id="announcementLine" hidden></p>
   </div>
 </header>
 
@@ -154,18 +156,37 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
     sat: null
   };
   var CLOSE_SOON_MINUTES = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.closeSoonMinutes) || 60;
+  var ANNOUNCEMENT = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.announcement) || "";
+  var STATUS_OPEN = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusOpen) || "Open now until {time} - call and come in";
+  var STATUS_SOON = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusSoon) || "Closing soon at {time} - call now";
+  var STATUS_CLOSED = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusClosed) || "Closed now - opens {next}";
+  var STATUS_CLOSED_NONE = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusClosedNoNext) || "Closed now";
   var DAY_KEYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  var DAY_NAMES = {sun: "Sunday", mon: "Monday", tue: "Tuesday", wed: "Wednesday", thu: "Thursday", fri: "Friday", sat: "Saturday"};
 
   var brandHome = document.getElementById("brandHome");
   var primary = document.getElementById("primaryCta");
   var secondary = document.getElementById("secondaryCta");
-  var note = document.getElementById("smartNote");
+  var statusLine = document.getElementById("statusLine");
+  var announcementLine = document.getElementById("announcementLine");
 
   function fmtHour(hour24) {
     var suffix = hour24 >= 12 ? "pm" : "am";
     var value = hour24 % 12;
     if (value === 0) value = 12;
     return value + suffix;
+  }
+
+  function nextOpeningText(nowDate, minutesNow) {
+    for (var j = 0; j <= 7; j++) {
+      var dayKey = DAY_KEYS[(nowDate.getDay() + j) % 7];
+      var hours = HOURS[dayKey];
+      if (hours && !(j === 0 && minutesNow >= hours[1] * 60)) {
+        var dayLabel = (j === 0 ? "today" : (j === 1 ? "tomorrow" : DAY_NAMES[dayKey]));
+        return dayLabel + " at " + fmtHour(hours[0]);
+      }
+    }
+    return "";
   }
 
   var now = new Date();
@@ -199,13 +220,22 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
     secondary.textContent = "View Hours, Pricing, and Directions";
   }
 
-  if (note) {
+  if (statusLine) {
     if (isOpen) {
-      note.textContent = closesSoon
-        ? "We are open but closing soon at " + fmtHour(todaysHours[1]) + "."
-        : "We are open now until " + fmtHour(todaysHours[1]) + ".";
+      statusLine.textContent = (closesSoon ? STATUS_SOON : STATUS_OPEN).replace("{time}", fmtHour(todaysHours[1]));
     } else {
-      note.textContent = "After hours right now. Use Quick Contact and we will follow up fast.";
+      var nextOpen = nextOpeningText(now, mins);
+      statusLine.textContent = nextOpen
+        ? STATUS_CLOSED.replace("{next}", nextOpen)
+        : STATUS_CLOSED_NONE;
+    }
+  }
+
+  if (announcementLine) {
+    var message = String(ANNOUNCEMENT || "").trim();
+    if (message) {
+      announcementLine.hidden = false;
+      announcementLine.textContent = message;
     }
   }
 

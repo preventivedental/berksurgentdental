@@ -17,6 +17,10 @@
   // announcement:
   // - Leave blank "" to hide announcement everywhere it is used
   // - Add text to show an announcement banner
+  //
+  // Status message templates:
+  // - Use {time} for closing time and {next} for next opening window
+  // - These are used by index and feeder pages
   window.BUD_SITE_CONFIG = {
     hours: {
       sun: null,
@@ -28,6 +32,10 @@
       sat: null
     },
     closeSoonMinutes: 60,
-    announcement: ""
+    announcement: "",
+    statusOpen: "Open now until {time} - call and come in",
+    statusSoon: "Closing soon at {time} - call now",
+    statusClosed: "Closed now - opens {next}",
+    statusClosedNoNext: "Closed now"
   };
 })();
