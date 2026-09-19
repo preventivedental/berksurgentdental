@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://berksurgentdental.com/sitemap.xml
