@@ -26,7 +26,7 @@
       sun: null,
       mon: [8, 17],
       tue: [9, 14],
-      wed: [7, 11],
+      wed: null,
       thu: [9, 15],
       fri: [9, 15],
       sat: null
