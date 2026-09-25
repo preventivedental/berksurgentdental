@@ -24,8 +24,8 @@
   window.BUD_SITE_CONFIG = {
     hours: {
       sun: null,
-      mon: [8, 17],
-      tue: [9, 14],
+      mon: [9, 16],
+      tue: [9, 16],
       wed: null,
       thu: [9, 15],
       fri: [9, 15],
