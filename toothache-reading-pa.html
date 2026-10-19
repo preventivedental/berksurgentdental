@@ -195,15 +195,9 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
 (function () {
   var PAGE_SOURCE = "toothache-reading-pa";
   var PAGE_INTENT = "toothache";
-  var HOURS = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.hours) || {
-    sun: null,
-    mon: [8, 17],
-    tue: [8, 17],
-    wed: [7, 11],
-    thu: [9, 15],
-    fri: [9, 15],
-    sat: null
-  };
+  // Hours come only from site-config.js. If it fails to load, HOURS is null
+  // and the page falls back to neutral "call us" messaging below.
+  var HOURS = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.hours) || null;
   var CLOSE_SOON_MINUTES = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.closeSoonMinutes) || 60;
   var ANNOUNCEMENT = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.announcement) || "";
   var STATUS_OPEN = (window.BUD_SITE_CONFIG && window.BUD_SITE_CONFIG.statusOpen) || "Open now until {time} - call and come in";
@@ -227,6 +221,7 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
   }
 
   function nextOpeningText(nowDate, minutesNow) {
+    if (!HOURS) return "";
     for (var j = 0; j <= 7; j++) {
       var dayKey = DAY_KEYS[(nowDate.getDay() + j) % 7];
       var hours = HOURS[dayKey];
@@ -239,7 +234,7 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
   }
 
   var now = new Date();
-  var todaysHours = HOURS[DAY_KEYS[now.getDay()]];
+  var todaysHours = HOURS ? HOURS[DAY_KEYS[now.getDay()]] : null;
   var mins = now.getHours() * 60 + now.getMinutes();
   var isOpen = !!todaysHours && mins >= (todaysHours[0] * 60) && mins < (todaysHours[1] * 60);
   var closesSoon = isOpen && (todaysHours[1] * 60 - mins <= CLOSE_SOON_MINUTES);
@@ -252,7 +247,10 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
   if (brandHome) brandHome.href = homeUrl;
 
   if (primary) {
-    if (isOpen && isMobile) {
+    if (!HOURS) {
+      primary.href = contactUrl;
+      primary.textContent = "Call or Text the Office";
+    } else if (isOpen && isMobile) {
       primary.href = "tel:+16107755521";
       primary.textContent = closesSoon ? "Call Now (Closing Soon)" : "Call Now (Open)";
     } else if (isOpen) {
@@ -270,7 +268,9 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
   }
 
   if (statusLine) {
-    if (isOpen) {
+    if (!HOURS) {
+      statusLine.textContent = "Call to check today's openings";
+    } else if (isOpen) {
       statusLine.textContent = (closesSoon ? STATUS_SOON : STATUS_OPEN).replace("{time}", fmtHour(todaysHours[1]));
     } else {
       var nextOpen = nextOpeningText(now, mins);

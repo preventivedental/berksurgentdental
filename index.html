@@ -289,20 +289,6 @@ tr.free td{color:var(--orange);font-weight:700}
     "latitude": 40.3236, 
     "longitude": -75.9288 
   },
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": "Friday",
-      "opens": "08:00",
-      "closes": "15:00"
-    }
-  ],
   "priceRange": "$$"
 }
 </script>
@@ -663,6 +649,35 @@ var CONFIG = {
       items += "<li>" + NAMES[dayKey] + ": " + labelText + "</li>";
     }
     footer.innerHTML = items;
+  }
+
+  // structured data (JSON-LD) hours from the same source
+  var ldTags = document.querySelectorAll('script[type="application/ld+json"]');
+  for (var li = 0; li < ldTags.length; li++) {
+    try {
+      var ld = JSON.parse(ldTags[li].textContent);
+      if (ld["@type"] !== "Dentist") continue;
+      var specs = [];
+      for (var d = 0; d < 7; d++) {
+        var dh = siteConfig.hours[DAYS[d]];
+        if (dh) {
+          specs.push({
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": NAMES[DAYS[d]],
+            "opens": ("0" + dh[0]).slice(-2) + ":00",
+            "closes": ("0" + dh[1]).slice(-2) + ":00"
+          });
+        }
+      }
+      if (specs.length) {
+        ld.openingHoursSpecification = specs;
+      } else {
+        delete ld.openingHoursSpecification;
+      }
+      ldTags[li].textContent = JSON.stringify(ld, null, 2);
+    } catch (e) {
+      // leave static JSON-LD untouched if it cannot be parsed
+    }
   }
 
   // open / closed light

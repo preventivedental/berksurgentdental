@@ -1,7 +1,8 @@
 (function () {
   // Single source of truth for site-wide office settings.
   // Edit this file to update hours across:
-  // - index.html status + hours table
+  // - index.html status + hours table + footer hours
+  // - index.html structured data (JSON-LD) hours
   // - all feeder page smart CTA open/closed messaging
   //
   // Hours format:
