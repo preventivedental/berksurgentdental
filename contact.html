@@ -8,12 +8,12 @@
     <title>Berks Urgent Dental Contact Card</title>
     <meta
         name="description"
-        content="Same-day urgent dental care in Reading, PA. Call, text, email, or get directions to Berks Urgent Dental." />
+        content="Same-day urgent dental care in Reading, PA. Call, email, or get directions to Berks Urgent Dental." />
     <meta name="theme-color" content="#0f2942" />
     <meta property="og:title" content="Berks Urgent Dental Contact Card | Reading, PA" />
     <meta
         property="og:description"
-        content="No lectures. No upselling. Just same-day relief. Reach Berks Urgent Dental by phone, text, email, or directions." />
+        content="No lectures. No upselling. Just same-day relief. Reach Berks Urgent Dental by phone, email, or directions." />
     <meta property="og:image" content="https://berksurgentdental.com/lewis.jpg" />
     <meta property="og:url" content="https://berksurgentdental.com/contact-card.html" />
             <meta property="og:type" content="website" />
@@ -25,7 +25,7 @@
             "name": "Berks Urgent Dental",
             "url": "https://berksurgentdental.com/contact-card.html",
             "image": "https://berksurgentdental.com/lewis.jpg",
-            "description": "Same-day urgent dental care in Reading, PA. Call, text, or email Berks Urgent Dental.",
+            "description": "Same-day urgent dental care in Reading, PA. Call or email Berks Urgent Dental.",
             "telephone": "+1-610-678-5700",
             "email": "hello@berksurgentdental.com",
             "address": {
@@ -421,7 +421,6 @@
                 </div>
 
                 <a href="tel:+16106785700" class="button" id="callNowBtn">Call Now</a>
-                <a href="sms:+16106785700" class="button" id="textNowBtn">Text Now</a>
                 <a href="mailto:hello@berksurgentdental.com" class="button" id="emailBtn">Email</a>
                 <a href="/contact.vcf" class="button" id="saveContactBtn">Save Contact</a>
                 <a
@@ -461,7 +460,7 @@
             <footer>
                 2026 Berks Urgent Dental<br />
                 2211 Quarry Drive, Suite E-67 Reading, PA 19609<br />
-                +1 (610) 678-5700 call and text<br />
+                +1 (610) 678-5700<br />
                 hello@berksurgentdental.com<br />
                 <a href="https://berksurgentdental.com/privacy.html" class="footer-link">Privacy Policy</a>
             </footer>
@@ -483,9 +482,6 @@
     <div class="share-popup" id="sharePopup" role="dialog" aria-modal="true" aria-labelledby="sharePopupTitle">
         <div class="share-popup-content">
             <h3 id="sharePopupTitle">Share this card</h3>
-            <a
-                href="sms:?body=Save%20Berks%20Urgent%20Dental%20to%20your%20contacts%3A%20https%3A%2F%2Fberksurgentdental.com%2Fcontact.vcf"
-                id="shareTextBtn">Share via Text</a>
             <a
                 href="mailto:?subject=Berks%20Urgent%20Dental%20Contact&body=Save%20this%20contact%3A%20https%3A%2F%2Fberksurgentdental.com%2Fcontact.vcf"
                 id="shareEmailBtn">Share via Email</a>
@@ -581,7 +577,6 @@
             }
 
             const callNowBtn = document.getElementById("callNowBtn");
-            const textNowBtn = document.getElementById("textNowBtn");
             const emailBtn = document.getElementById("emailBtn");
             const directionsBtn = document.getElementById("directionsBtn");
             const saveContactBtn = document.getElementById("saveContactBtn");
@@ -589,18 +584,11 @@
             const aboutOpenBtn = document.getElementById("aboutOpenBtn");
             const aboutCloseBtn = document.getElementById("aboutCloseBtn");
             const shareCloseBtn = document.getElementById("shareCloseBtn");
-            const shareTextBtn = document.getElementById("shareTextBtn");
             const shareEmailBtn = document.getElementById("shareEmailBtn");
 
             if (callNowBtn) {
                 callNowBtn.addEventListener("click", function () {
                     if (typeof gtag === "function") gtag("event", "click_call_now");
-                });
-            }
-
-            if (textNowBtn) {
-                textNowBtn.addEventListener("click", function () {
-                    if (typeof gtag === "function") gtag("event", "click_text_now");
                 });
             }
 
@@ -644,12 +632,6 @@
             if (shareCloseBtn) {
                 shareCloseBtn.addEventListener("click", function () {
                     closeSharePopup();
-                });
-            }
-
-            if (shareTextBtn) {
-                shareTextBtn.addEventListener("click", function () {
-                    if (typeof gtag === "function") gtag("event", "share_text");
                 });
             }
 
