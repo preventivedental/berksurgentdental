@@ -762,13 +762,13 @@ var CONFIG = {
     box.setAttribute("data-state", "soon");
     label.textContent = siteConfig.statusSoon.replace("{time}", fmt(t[1]));
     if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
-    if (bannerLine2) bannerLine2.textContent = "No answering machines. No waiting until Monday. Call or walk in.";
+    if (bannerLine2) bannerLine2.textContent = "No waiting until Monday. Call or walk in.";
   } else if (open) {
     if (openBanner) openBanner.hidden = false;
     box.setAttribute("data-state", "open");
     label.textContent = siteConfig.statusOpen.replace("{time}", fmt(t[1]));
     if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
-    if (bannerLine2) bannerLine2.textContent = "No answering machines. No waiting until Monday. Call or walk in.";
+    if (bannerLine2) bannerLine2.textContent = "No waiting until Monday. Call or walk in.";
   } else {
     if (openBanner) openBanner.hidden = true;
     box.setAttribute("data-state", "closed");
@@ -776,7 +776,7 @@ var CONFIG = {
       ? siteConfig.statusClosed.replace("{next}", next)
       : siteConfig.statusClosedNoNext;
     if (bannerLine1) bannerLine1.textContent = next ? "WE OPEN " + next.toUpperCase() + "." : "WE ARE CURRENTLY CLOSED.";
-    if (bannerLine2) bannerLine2.textContent = "No answering machines. Call now and we will tell you exactly when to come in.";
+    if (bannerLine2) bannerLine2.textContent = "Call now and we will tell you exactly when to come in.";
   }
   }
 
