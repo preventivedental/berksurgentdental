@@ -358,7 +358,7 @@ tr.free td{color:var(--orange);font-weight:700}
   <p class="hero-facts">
     <span class="hf-name">Berks Urgent Dental</span>
     <span class="hf-addr">2211 Quarry Drive, Suite E-67, Reading, PA 19609</span>
-    <span class="hf-hours">Open Saturday and Sunday, 8am to 11am. Thursday and Friday evenings.</span>
+    <span class="hf-hours" id="heroHours">Open Sat&nbsp;8am&nbsp;to&nbsp;3pm &middot; Sun&nbsp;8am&nbsp;to&nbsp;1pm &middot; Thu&nbsp;&amp;&nbsp;Fri&nbsp;5pm&nbsp;to&nbsp;9pm</span>
   </p>
 
   <a class="call" href="tel:+16106785700">(610) 678-5700<span>Tap to call</span></a>
@@ -560,6 +560,8 @@ var CONFIG = {
   var DAYS = ["sun","mon","tue","wed","thu","fri","sat"];
   var NAMES = {sun:"Sunday",mon:"Monday",tue:"Tuesday",wed:"Wednesday",
                thu:"Thursday",fri:"Friday",sat:"Saturday"};
+  var SHORT = {sun:"Sun",mon:"Mon",tue:"Tue",wed:"Wed",
+               thu:"Thu",fri:"Fri",sat:"Sat"};
 
   function fmt(h) {
     var ampm = h >= 12 ? "pm" : "am";
@@ -658,6 +660,41 @@ var CONFIG = {
       items += "<li>" + NAMES[dayKey] + ": " + labelText + "</li>";
     }
     footer.innerHTML = items;
+  }
+
+  // hero hours sentence from the same source
+  var heroHours = document.getElementById("heroHours");
+  if (heroHours) {
+    var heroOrder = ["sat","sun","mon","tue","wed","thu","fri"];
+    var groups = [];
+    for (var g = 0; g < heroOrder.length; g++) {
+      var gKey = heroOrder[g];
+      var gH = siteConfig.hours[gKey];
+      if (!gH) continue;
+      var gText = fmt(gH[0]) + "\u00A0to\u00A0" + fmt(gH[1]);
+      var lastGroup = groups[groups.length - 1];
+      if (lastGroup && lastGroup.text === gText) {
+        lastGroup.days.push(gKey);
+      } else {
+        groups.push({ days: [gKey], text: gText });
+      }
+    }
+    var heroText = "";
+    if (groups.length === 1 && groups[0].days.length === 7) {
+      heroText = "Open daily " + groups[0].text;
+    } else if (groups.length) {
+      var chunks = [];
+      for (var c = 0; c < groups.length; c++) {
+        var gd = groups[c].days;
+        var dayLabel = gd.length === 1 ? SHORT[gd[0]]
+          : gd.length === 2 ? SHORT[gd[0]] + "\u00A0&\u00A0" + SHORT[gd[1]]
+          : SHORT[gd[0]] + "\u00A0to\u00A0" + SHORT[gd[gd.length - 1]];
+        chunks.push(dayLabel + "\u00A0" + groups[c].text);
+      }
+      heroText = "Open " + chunks.join(" \u00B7 ");
+    }
+    heroHours.textContent = heroText;
+    heroHours.style.display = heroText ? "" : "none";
   }
 
   // structured data (JSON-LD) hours from the same source

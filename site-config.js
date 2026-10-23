@@ -1,7 +1,7 @@
 (function () {
   // Single source of truth for site-wide office settings.
   // Edit this file to update hours across:
-  // - index.html status + hours table + footer hours
+  // - index.html status + hero hours + hours table + footer hours
   // - index.html structured data (JSON-LD) hours
   // - all feeder page smart CTA open/closed messaging
   //
@@ -26,8 +26,8 @@
     hours: {
       sun: [8, 13],
       mon: null,
-      tue: [10, 16],
-      wed: [10, 16],
+      tue: null,
+      wed: null,
       thu: [17, 21],
       fri: [17, 21],
       sat: [8, 15]
