@@ -357,17 +357,6 @@ tr.free td{color:var(--orange);font-weight:700}
     "latitude": 40.3428, 
     "longitude": -76.0033 
   },
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Saturday",
-        "Sunday"
-      ],
-      "opens": "08:00",
-      "closes": "11:00"
-    }
-  ],
   "priceRange": "$$"
 }
 </script>
@@ -376,7 +365,7 @@ tr.free td{color:var(--orange);font-weight:700}
 </head>
 <body>
 
-<div class="open-banner" id="openBanner" role="status" aria-live="polite">
+<div class="open-banner" id="openBanner" role="status" aria-live="polite" hidden>
   <div class="inner">
     <div class="line1" id="openBannerLine1">YES, WE ARE OPEN RIGHT NOW.</div>
     <div class="line2" id="openBannerLine2">No answering machines. No waiting until Monday. Call or walk in.</div>
@@ -745,35 +734,6 @@ var CONFIG = {
     heroHours.style.display = heroText ? "" : "none";
   }
 
-  // structured data (JSON-LD) hours from the same source
-  var ldTags = document.querySelectorAll('script[type="application/ld+json"]');
-  for (var li = 0; li < ldTags.length; li++) {
-    try {
-      var ld = JSON.parse(ldTags[li].textContent);
-      if (ld["@type"] !== "Dentist") continue;
-      var specs = [];
-      for (var d = 0; d < 7; d++) {
-        var dh = siteConfig.hours[DAYS[d]];
-        if (dh) {
-          specs.push({
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": NAMES[DAYS[d]],
-            "opens": ("0" + dh[0]).slice(-2) + ":00",
-            "closes": ("0" + dh[1]).slice(-2) + ":00"
-          });
-        }
-      }
-      if (specs.length) {
-        ld.openingHoursSpecification = specs;
-      } else {
-        delete ld.openingHoursSpecification;
-      }
-      ldTags[li].textContent = JSON.stringify(ld, null, 2);
-    } catch (e) {
-      // leave static JSON-LD untouched if it cannot be parsed
-    }
-  }
-
   // open / closed light
   var t = siteConfig.hours[todayKey];
   var mins = now.getHours() * 60 + now.getMinutes();
@@ -783,6 +743,7 @@ var CONFIG = {
   var closingSoon = open && closeMins > 0 && closeMins <= soonWindow;
   var box = document.getElementById("status");
   var label = document.getElementById("statusText");
+  var openBanner = document.getElementById("openBanner");
   var bannerLine1 = document.getElementById("openBannerLine1");
   var bannerLine2 = document.getElementById("openBannerLine2");
 
@@ -797,16 +758,19 @@ var CONFIG = {
   }
 
   if (closingSoon) {
+    if (openBanner) openBanner.hidden = false;
     box.setAttribute("data-state", "soon");
     label.textContent = siteConfig.statusSoon.replace("{time}", fmt(t[1]));
     if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
     if (bannerLine2) bannerLine2.textContent = "No answering machines. No waiting until Monday. Call or walk in.";
   } else if (open) {
+    if (openBanner) openBanner.hidden = false;
     box.setAttribute("data-state", "open");
     label.textContent = siteConfig.statusOpen.replace("{time}", fmt(t[1]));
     if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
     if (bannerLine2) bannerLine2.textContent = "No answering machines. No waiting until Monday. Call or walk in.";
   } else {
+    if (openBanner) openBanner.hidden = true;
     box.setAttribute("data-state", "closed");
     label.textContent = next
       ? siteConfig.statusClosed.replace("{next}", next)
