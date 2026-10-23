@@ -401,7 +401,7 @@ tr.free td{color:var(--orange);font-weight:700}
 <div class="open-banner" id="openBanner" role="status" aria-live="polite" hidden>
   <div class="inner">
     <div class="line1" id="openBannerLine1">YES, WE ARE OPEN RIGHT NOW.</div>
-    <div class="line2" id="openBannerLine2">No answering machines. No waiting until Monday. Call or walk in.</div>
+    <div class="line2" id="openBannerLine2">Call or walk in. We’re ready to see you today.</div>
     <a class="phone" href="tel:+16106785700" id="openBannerPhone">(610) 678-5700</a>
     <div class="addr">2211 Quarry Drive, Suite E-67, Reading, PA 19609</div>
   </div>
@@ -791,13 +791,13 @@ var CONFIG = {
     box.setAttribute("data-state", "soon");
     label.textContent = siteConfig.statusSoon.replace("{time}", fmt(t[1]));
     if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
-    if (bannerLine2) bannerLine2.textContent = "No waiting until Monday. Call or walk in.";
+    if (bannerLine2) bannerLine2.textContent = "Call or walk in. We’re ready to see you today.";
   } else if (open) {
     if (openBanner) openBanner.hidden = false;
     box.setAttribute("data-state", "open");
     label.textContent = siteConfig.statusOpen.replace("{time}", fmt(t[1]));
     if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
-    if (bannerLine2) bannerLine2.textContent = "No waiting until Monday. Call or walk in.";
+    if (bannerLine2) bannerLine2.textContent = "Call or walk in. We’re ready to see you today.";
   } else {
     if (openBanner) openBanner.hidden = true;
     box.setAttribute("data-state", "closed");
