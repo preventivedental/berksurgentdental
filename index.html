@@ -55,6 +55,38 @@ a{color:var(--signal-dk)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:2px}
 p{margin:0 0 .9rem}
 
+.open-banner{
+  position:sticky;
+  top:0;
+  z-index:120;
+  background:linear-gradient(135deg,#0F3557,#154A77);
+  color:#fff;
+  border-bottom:4px solid #C25008;
+  box-shadow:0 8px 18px rgba(15,41,66,.28);
+}
+.open-banner .inner{max-width:56rem;margin:0 auto;padding:.7rem 1rem .8rem;text-align:center}
+.open-banner .line1{
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:clamp(1rem,3.8vw,1.5rem);
+  font-weight:700;
+  letter-spacing:.01em;
+  text-transform:uppercase;
+  line-height:1.1;
+}
+.open-banner .line2{font-size:.95rem;line-height:1.25;opacity:.95;margin-top:.2rem}
+.open-banner .phone{
+  display:inline-block;
+  margin-top:.45rem;
+  color:#fff;
+  text-decoration:none;
+  font-family:"Barlow Condensed",sans-serif;
+  font-weight:700;
+  font-size:clamp(1.7rem,8.2vw,3rem);
+  line-height:1;
+  letter-spacing:.01em;
+}
+.open-banner .addr{margin-top:.2rem;font-size:.88rem;opacity:.94}
+
 .mast{background:var(--panel);padding:1.3rem 1.25rem 1.4rem;
   display:flex;justify-content:center}
 .mast svg{width:212px;height:auto;display:block;
@@ -239,6 +271,13 @@ tr.free td{color:var(--orange);font-weight:700}
   .bar{display:none}
   body{padding-bottom:0}
 }
+@media (max-width:699px){
+  .open-banner .inner{padding:.62rem .75rem .72rem}
+  .open-banner .line2{font-size:.9rem}
+  .open-banner .addr{font-size:.83rem}
+  .call{font-size:clamp(2.5rem,12vw,3.35rem);padding:1.15rem .9rem}
+  .call span{font-size:.96rem}
+}
 
 /* ---------- print ---------- */
 @page{size:Letter;margin:.65in}
@@ -336,6 +375,15 @@ tr.free td{color:var(--orange);font-weight:700}
 
 </head>
 <body>
+
+<div class="open-banner" id="openBanner" role="status" aria-live="polite">
+  <div class="inner">
+    <div class="line1" id="openBannerLine1">YES, WE ARE OPEN RIGHT NOW.</div>
+    <div class="line2" id="openBannerLine2">No answering machines. No waiting until Monday. Call or walk in.</div>
+    <a class="phone" href="tel:+16106785700" id="openBannerPhone">(610) 678-5700</a>
+    <div class="addr">2211 Quarry Drive, Suite E-67, Reading, PA 19609</div>
+  </div>
+</div>
 
 <header class="mast">
   <svg viewBox="0 0 340 180" role="img" aria-label="Berks Urgent Dental" xmlns="http://www.w3.org/2000/svg">
@@ -735,27 +783,36 @@ var CONFIG = {
   var closingSoon = open && closeMins > 0 && closeMins <= soonWindow;
   var box = document.getElementById("status");
   var label = document.getElementById("statusText");
+  var bannerLine1 = document.getElementById("openBannerLine1");
+  var bannerLine2 = document.getElementById("openBannerLine2");
+
+  var next = null;
+  for (var j = 0; j <= 7; j++) {
+    var kk = DAYS[(now.getDay() + j) % 7];
+    var hh = siteConfig.hours[kk];
+    if (hh && !(j === 0 && mins >= hh[1] * 60)) {
+      next = (j === 0 ? "today" : j === 1 ? "tomorrow" : NAMES[kk]) + " at " + fmt(hh[0]);
+      break;
+    }
+  }
 
   if (closingSoon) {
     box.setAttribute("data-state", "soon");
     label.textContent = siteConfig.statusSoon.replace("{time}", fmt(t[1]));
+    if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
+    if (bannerLine2) bannerLine2.textContent = "No answering machines. No waiting until Monday. Call or walk in.";
   } else if (open) {
     box.setAttribute("data-state", "open");
     label.textContent = siteConfig.statusOpen.replace("{time}", fmt(t[1]));
+    if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
+    if (bannerLine2) bannerLine2.textContent = "No answering machines. No waiting until Monday. Call or walk in.";
   } else {
     box.setAttribute("data-state", "closed");
-    var next = null;
-    for (var j = 0; j <= 7; j++) {
-      var kk = DAYS[(now.getDay() + j) % 7];
-      var hh = siteConfig.hours[kk];
-      if (hh && !(j === 0 && mins >= hh[1] * 60)) {
-        next = (j === 0 ? "today" : j === 1 ? "tomorrow" : NAMES[kk]) + " at " + fmt(hh[0]);
-        break;
-      }
-    }
     label.textContent = next
       ? siteConfig.statusClosed.replace("{next}", next)
       : siteConfig.statusClosedNoNext;
+    if (bannerLine1) bannerLine1.textContent = next ? "WE OPEN " + next.toUpperCase() + "." : "WE ARE CURRENTLY CLOSED.";
+    if (bannerLine2) bannerLine2.textContent = "No answering machines. Call now and we will tell you exactly when to come in.";
   }
   }
 
