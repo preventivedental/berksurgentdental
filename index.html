@@ -155,6 +155,12 @@ td .code{display:block;font-size:.8rem;color:var(--ink-soft);font-weight:400;mar
 tr.free td{color:var(--orange);font-weight:700}
 .note{font-size:.95rem;color:var(--ink-soft);margin:0 0 .7rem}
 
+/* ---------- financing callout ---------- */
+.fin-callout{margin:1.1rem 0 .9rem;padding:.95rem 1rem;border:2px solid var(--orange);
+  border-radius:12px;background:rgba(232,112,42,.12)}
+.fin-callout p{margin:0 0 .45rem;font-weight:600;font-size:1.06rem;color:var(--ink)}
+.fin-callout a{font-weight:700;font-size:1.06rem}
+
 /* ---------- the one bold moment ---------- */
 .promise{background:var(--panel);color:#E9F1F7;margin:0;padding:2.3rem 0 2.4rem}
 .promise h2{color:#E9F1F7}
@@ -392,7 +398,10 @@ tr.free td{color:var(--orange);font-weight:700}
       <li>A list of the medicines you take. Or, just bring the bottles</li>
       <li>A way to pay for the day, since treatment is paid at the visit</li>
     </ul>
-    <p class="note">Need to split the cost into monthly payments? See <a href="financing.html">financing options through Cherry</a>. Applying takes about a minute and won't affect your credit score.</p>
+    <div class="fin-callout">
+      <p>Monthly payments available through Cherry. Get instantly approved in seconds with a soft credit check that won't affect your credit score. 0% options available.</p>
+      <a href="financing.html">Check your financing options</a>
+    </div>
     <p class="note">Not sure we're the right place? Call and tell us what's going on. That conversation doesn't cost anything either.</p>
   </section>
 
