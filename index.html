@@ -6,9 +6,7 @@
 <title>Dentist Open Now in Reading, PA | Same-Day Berks Urgent Dental</title>
 <meta name="description" content="Searching for a dentist open now? Berks Urgent Dental provides same-day emergency extractions and pain relief in Reading and Wyomissing. Call (610) 678-5700.">
 <link rel="canonical" href="https://berksurgentdental.com/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0F2942">
 
 <style>
 :root{
@@ -45,7 +43,7 @@ html{-webkit-text-size-adjust:100%}
 
 body{
   margin:0;background:var(--paper);color:var(--ink);
-  font-family:"Barlow",system-ui,-apple-system,sans-serif;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-size:17.5px;line-height:1.62;
   padding-bottom:calc(var(--bar) + env(safe-area-inset-bottom));
 }
@@ -506,7 +504,7 @@ tr.free td{color:var(--orange);font-weight:700}
 
   <section class="me">
     <h2>Who you'll see</h2>
-    <img id="photo" alt="Shad Lewis, DMD" src="lewis.jpg" loading="eager">
+    <img id="photo" alt="Shad Lewis, DMD" src="lewis.jpg" loading="lazy" decoding="async" fetchpriority="low">
     <p><b>Shad Lewis, DMD.</b> I've been practicing dentistry in Berks County for
     twenty-two years. When you come in, I'm the one who looks at your tooth and
     I'm the one who treats it. There's no associate, no rotating schedule, and
