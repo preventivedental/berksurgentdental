@@ -11,12 +11,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{
+  color-scheme:light dark;
   --paper:#E7EEF4;
   --ink:#0F2942;
   --ink-soft:#48627A;
   --signal:#154A77;
   --orange:#C25008;
   --rule:#C3D2DE;
+  --band:#0F2942;
+  --card:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#0D1823;
+    --ink:#E9F1F7;
+    --ink-soft:#A7BCCB;
+    --signal:#9CC6E8;
+    --orange:#E8702A;
+    --rule:#2C4256;
+    --band:#0F2942;
+    --card:#10253C;
+  }
 }
 *{box-sizing:border-box}
 body{
@@ -27,14 +42,14 @@ body{
   line-height:1.6;
 }
 .header{
-  background:var(--ink);
+  background:var(--band);
   color:#fff;
   padding:1.1rem 1.25rem;
 }
 .header .inner{max-width:70rem;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .header a{color:#fff;text-decoration:none;font-weight:600}
 .wrap{max-width:70rem;margin:0 auto;padding:1.4rem 1.25rem 3rem}
-.card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:1.25rem 1.1rem}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:1.25rem 1.1rem}
 h1{
   margin:.2rem 0 .4rem;
   font-family:"Barlow Condensed",sans-serif;

@@ -12,17 +12,32 @@
 
 <style>
 :root{
-  --paper:#0D1823;
-  --ink:#E9F1F7;
-  --ink-soft:#A7BCCB;
-  --signal:#1F5C8F;
-  --signal-dk:#9CC6E8;
-  --orange:#E8702A;
-  --green:#35B487;
-  --alert:#E07A63;
-  --rule:#2C4256;
+  color-scheme:light dark;
+  --paper:#F2F6FA;
+  --ink:#0F2942;
+  --ink-soft:#48627A;
+  --signal:#154A77;
+  --signal-dk:#0F3557;
+  --orange:#C25008;
+  --green:#1E7A5A;
+  --alert:#B03A2E;
+  --rule:#C3D2DE;
   --panel:#0F2942;
   --bar:76px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#0D1823;
+    --ink:#E9F1F7;
+    --ink-soft:#A7BCCB;
+    --signal:#1F5C8F;
+    --signal-dk:#9CC6E8;
+    --orange:#E8702A;
+    --green:#35B487;
+    --alert:#E07A63;
+    --rule:#2C4256;
+    --panel:#0F2942;
+  }
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -598,11 +613,14 @@ var CONFIG = {
   // booking link — only shown if one is set
   if (siteConfig.booking) {
     var b = document.getElementById("book");
-    b.setAttribute("href", siteConfig.booking);
-    b.setAttribute("target", "_blank");
-    b.setAttribute("rel", "noopener");
-    b.className = "alt book on";
-    document.getElementById("bookNote").className = "bookNote";
+    if (b) {
+      b.setAttribute("href", siteConfig.booking);
+      b.setAttribute("target", "_blank");
+      b.setAttribute("rel", "noopener");
+      b.className = "alt book on";
+    }
+    var bn = document.getElementById("bookNote");
+    if (bn) bn.className = "bookNote";
   }
 
   // optional photo

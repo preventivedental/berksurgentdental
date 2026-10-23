@@ -53,6 +53,7 @@
 
     <style>
         :root {
+            color-scheme: light dark;
             --ink: #0f2942;
             --body: #28445d;
             --muted: #526b82;
@@ -63,6 +64,66 @@
             --accent: #c25008;
             --accent-bg: #eef4f9;
             --shadow: 0 18px 42px rgba(13, 31, 67, 0.12);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --ink: #e9f1f7;
+                --body: #c3d2de;
+                --muted: #9db4c6;
+                --panel: #10253c;
+                --line: #2c4256;
+                --brand: #1f5c8f;
+                --brand-hover: #2a70ab;
+                --accent: #e8702a;
+                --accent-bg: #12293d;
+                --shadow: 0 18px 42px rgba(0, 0, 0, 0.45);
+            }
+
+            body {
+                background:
+                    radial-gradient(circle at 15% 5%, #12293d 0%, rgba(18, 41, 61, 0) 42%),
+                    linear-gradient(180deg, #0d1823 0%, #0a141d 100%);
+            }
+
+            .card {
+                background: linear-gradient(160deg, var(--accent-bg), var(--panel) 48%);
+            }
+
+            footer {
+                color: #7e97ab;
+            }
+
+            .qr-label,
+            .qr-url {
+                color: #a7bccb;
+            }
+
+            .privacy-note {
+                color: #7e97ab;
+            }
+
+            .footer-link {
+                color: #9cc6e8;
+            }
+
+            .name-with-icon button {
+                color: #9cc6e8;
+            }
+
+            .share-popup-content {
+                background: #10253c;
+                border-color: #2c4256;
+            }
+
+            .share-popup-content p {
+                color: #c3d2de;
+            }
+
+            .announcement-small,
+            .announcement-dates {
+                color: #8ba2b5;
+            }
         }
 
         * {
@@ -424,7 +485,7 @@
                 <a href="mailto:hello@berksurgentdental.com" class="button" id="emailBtn">Email</a>
                 <a href="/contact.vcf" class="button" id="saveContactBtn">Save Contact</a>
                 <a
-                    href="https://maps.google.com/?q=2211+Quarry+Drive+Reading+PA+19609"
+                    href="https://maps.google.com/?q=2211+Quarry+Drive+Suite+E-67+Reading+PA+19609"
                     target="_blank"
                     rel="noopener"
                     class="button"
