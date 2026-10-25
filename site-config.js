@@ -28,9 +28,9 @@
       mon: null,
       tue: null,
       wed: null,
-      thu: [17, 21],
-      fri: [17, 21],
-      sat: [8, 15]
+      thu: null,
+      fri: null,
+      sat: [8, 1430]
     },
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
