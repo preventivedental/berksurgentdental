@@ -24,13 +24,13 @@
   // - These are used by index and feeder pages
   window.BUD_SITE_CONFIG = {
     hours: {
-      sun: [8, 13],
+      sun: [8, 17],
       mon: null,
       tue: null,
       wed: null,
-      thu: null,
-      fri: null,
-      sat: [8, 1430]
+      thu: [12, 17],
+      fri: [15, 19],
+      sat: [8, 17]
     },
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
