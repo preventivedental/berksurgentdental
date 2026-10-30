@@ -797,7 +797,7 @@ var CONFIG = {
   }
 
   if (closingSoon) {
-    if (openBanner) openBanner.hidden = false;
+    if (openBanner) openBanner.hidden = true;
     box.setAttribute("data-state", "soon");
     label.textContent = siteConfig.statusSoon.replace("{time}", fmt(t[1]));
     if (bannerLine1) bannerLine1.textContent = "YES, WE ARE OPEN RIGHT NOW.";
