@@ -321,10 +321,42 @@ tr.free td{color:var(--orange);font-weight:700}
 <script>
 (function () {
   var DAYS = ["sun","mon","tue","wed","thu","fri","sat"];
-  var now = new Date();
-  var todayKey = DAYS[now.getDay()];
+
+  function getEasternNowParts() {
+    var formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
+    var parts = formatter.formatToParts(new Date());
+    var values = {};
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      if (part.type !== "literal") values[part.type] = part.value;
+    }
+    var utcDate = new Date(Date.UTC(
+      Number(values.year),
+      Number(values.month) - 1,
+      Number(values.day),
+      Number(values.hour),
+      Number(values.minute),
+      Number(values.second)
+    ));
+    return {
+      day: utcDate.getUTCDay(),
+      totalMinutes: (Number(values.hour) * 60) + Number(values.minute)
+    };
+  }
+
+  var now = getEasternNowParts();
+  var todayKey = DAYS[now.day];
   var t = window.BUD_SITE_CONFIG.hours[todayKey];
-  var mins = now.getHours() * 60 + now.getMinutes();
+  var mins = now.totalMinutes;
   var open = !!t && mins >= t[0] * 60 && mins < t[1] * 60;
   var closeMins = t ? (t[1] * 60 - mins) : 0;
   var soonWindow = typeof window.BUD_SITE_CONFIG.closeSoonMinutes === "number" ? window.BUD_SITE_CONFIG.closeSoonMinutes : 60;

@@ -36,7 +36,7 @@
     openSoonMinutes: 30,
     announcement: "",
     statusOpen: "Open now until {time} - call and come in",
-    statusSoon: "Closing soon at {time} - call now",
+    statusSoon: "Closing soon at {time}",
     statusOpeningSoon: "Opening soon at {time} - call now",
     statusClosed: "Closed now - opens {next}",
     statusClosedNoNext: "Closed now"

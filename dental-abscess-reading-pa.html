@@ -174,9 +174,40 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
     return value + suffix;
   }
 
-  function nextOpeningText(nowDate, minutesNow) {
+  function getEasternNowParts() {
+    var formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
+    var parts = formatter.formatToParts(new Date());
+    var values = {};
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      if (part.type !== "literal") values[part.type] = part.value;
+    }
+    var utcDate = new Date(Date.UTC(
+      Number(values.year),
+      Number(values.month) - 1,
+      Number(values.day),
+      Number(values.hour),
+      Number(values.minute),
+      Number(values.second)
+    ));
+    return {
+      day: utcDate.getUTCDay(),
+      totalMinutes: (Number(values.hour) * 60) + Number(values.minute)
+    };
+  }
+
+  function nextOpeningText(nowDay, minutesNow) {
     for (var j = 0; j <= 7; j++) {
-      var dayKey = DAY_KEYS[(nowDate.getDay() + j) % 7];
+      var dayKey = DAY_KEYS[(nowDay + j) % 7];
       var hours = HOURS[dayKey];
       if (hours && !(j === 0 && minutesNow >= hours[1] * 60)) {
         var dayLabel = (j === 0 ? "today" : (j === 1 ? "tomorrow" : DAY_NAMES[dayKey]));
@@ -186,9 +217,9 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
     return "";
   }
 
-  var now = new Date();
-  var todaysHours = HOURS[DAY_KEYS[now.getDay()]];
-  var mins = now.getHours() * 60 + now.getMinutes();
+  var now = getEasternNowParts();
+  var todaysHours = HOURS[DAY_KEYS[now.day]];
+  var mins = now.totalMinutes;
   var isOpen = !!todaysHours && mins >= (todaysHours[0] * 60) && mins < (todaysHours[1] * 60);
   var closesSoon = isOpen && (todaysHours[1] * 60 - mins <= CLOSE_SOON_MINUTES);
   var isMobile = window.matchMedia("(max-width: 760px)").matches;
@@ -221,7 +252,7 @@ footer{padding:0 0 2.2rem;color:var(--ink-soft);font-size:.93rem}
     if (isOpen) {
       statusLine.textContent = (closesSoon ? STATUS_SOON : STATUS_OPEN).replace("{time}", fmtHour(todaysHours[1]));
     } else {
-      var nextOpen = nextOpeningText(now, mins);
+      var nextOpen = nextOpeningText(now.day, mins);
       statusLine.textContent = nextOpen
         ? STATUS_CLOSED.replace("{next}", nextOpen)
         : STATUS_CLOSED_NONE;

@@ -709,9 +709,42 @@ var CONFIG = {
     ann.hidden = false;
   }
 
+  function getEasternNowParts() {
+    var formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
+    var parts = formatter.formatToParts(new Date());
+    var values = {};
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      if (part.type !== "literal") values[part.type] = part.value;
+    }
+    var utcDate = new Date(Date.UTC(
+      Number(values.year),
+      Number(values.month) - 1,
+      Number(values.day),
+      Number(values.hour),
+      Number(values.minute),
+      Number(values.second)
+    ));
+    return {
+      day: utcDate.getUTCDay(),
+      hours: Number(values.hour),
+      minutes: Number(values.minute),
+      totalMinutes: (Number(values.hour) * 60) + Number(values.minute)
+    };
+  }
+
   // hours table
-  var now = new Date();
-  var todayKey = DAYS[now.getDay()];
+  var now = getEasternNowParts();
+  var todayKey = DAYS[now.day];
   var rows = "";
   for (var i = 1; i <= 7; i++) {
     var key = DAYS[i % 7];
@@ -772,7 +805,7 @@ var CONFIG = {
 
   // open / closed light
   var t = siteConfig.hours[todayKey];
-  var mins = now.getHours() * 60 + now.getMinutes();
+  var mins = now.totalMinutes;
   var open = !!t && mins >= t[0] * 60 && mins < t[1] * 60;
   var closeMins = t ? (t[1] * 60 - mins) : 0;
   var soonWindow = typeof siteConfig.closeSoonMinutes === "number" ? siteConfig.closeSoonMinutes : 60;
@@ -788,7 +821,7 @@ var CONFIG = {
 
   var next = null;
   for (var j = 0; j <= 7; j++) {
-    var kk = DAYS[(now.getDay() + j) % 7];
+    var kk = DAYS[(now.day + j) % 7];
     var hh = siteConfig.hours[kk];
     if (hh && !(j === 0 && mins >= hh[1] * 60)) {
       next = (j === 0 ? "today" : j === 1 ? "tomorrow" : NAMES[kk]) + " at " + fmt(hh[0]);
