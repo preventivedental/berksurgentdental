@@ -748,6 +748,7 @@ var CONFIG = {
   var rows = "";
   for (var i = 1; i <= 7; i++) {
     var key = DAYS[i % 7];
+    if (!Object.prototype.hasOwnProperty.call(siteConfig.hours, key)) continue;
     var h = siteConfig.hours[key];
     var txt = h ? fmt(h[0]) + " – " + fmt(h[1]) : "Closed";
     rows += '<tr' + (key === todayKey ? ' class="today"' : '') + '><td>' +
@@ -761,6 +762,7 @@ var CONFIG = {
     var items = "";
     for (var f = 0; f < 7; f++) {
       var dayKey = DAYS[f];
+      if (!Object.prototype.hasOwnProperty.call(siteConfig.hours, dayKey)) continue;
       var dayHours = siteConfig.hours[dayKey];
       var labelText = dayHours ? fmt(dayHours[0]) + " - " + fmt(dayHours[1]) : "Closed";
       items += "<li>" + NAMES[dayKey] + ": " + labelText + "</li>";
