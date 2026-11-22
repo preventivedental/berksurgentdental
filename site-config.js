@@ -32,9 +32,9 @@
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
     announcement: "HOURS FOR TODAY 11/22 8AM to 1PM",
-    statusOpen: "Open now until {time} - call and come in",
+    statusOpen: "Open now until {time}",
     statusSoon: "Closing soon at {time}",
-    statusOpeningSoon: "Opening soon at {time} - call now",
+    statusOpeningSoon: "Opening soon at {time}",
     statusClosed: "Closed now - opens {next}",
     statusClosedNoNext: "Closed now"
   };
