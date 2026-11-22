@@ -24,14 +24,14 @@
   // - These are used by index and feeder pages
   window.BUD_SITE_CONFIG = {
     hours: {
-      sun: [8, 16],
+      sun: [8, 13],
       thu: [12, 17],
       fri: [15, 19],
       sat: [8, 16]
     },
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
-    announcement: "HOURS FOR TODAY 11/22 8AM - 1PM",
+    announcement: "HOURS FOR TODAY 11/22 8AM to 1PM",
     statusOpen: "Open now until {time} - call and come in",
     statusSoon: "Closing soon at {time}",
     statusOpeningSoon: "Opening soon at {time} - call now",
