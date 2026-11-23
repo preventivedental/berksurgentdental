@@ -25,13 +25,14 @@
   window.BUD_SITE_CONFIG = {
     hours: {
       sun: [8, 16],
-      thu: [12, 17],
-      fri: [15, 19],
+      wed: [8, 12],
+      // thu: [12, 17],
+      // fri: [15, 19],
       sat: [8, 16]
     },
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
-    announcement: "Open Wednesday 11/25 8am to 12pm",
+    announcement: "Open Wednesday 11/25 8am to 12pm\nClosed Thursday and Friday",
     statusOpen: "Open now until {time}",
     statusSoon: "Closing soon at {time}",
     statusOpeningSoon: "Opening soon at {time}",
