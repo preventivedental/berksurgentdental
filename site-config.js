@@ -17,7 +17,7 @@
   //
   // announcement:
   // - Leave blank "" to hide announcement everywhere it is used
-  // - Add text to show an announcement banner
+  // - Use \n in the text to start a new line
   //
   // Status message templates:
   // - Use {time} for closing time and {next} for next opening window
