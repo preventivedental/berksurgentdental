@@ -30,11 +30,12 @@
       wed: [8, 12],
       // thu: [12, 17],
       // fri: [15, 19],
-      sat: [8, 16]
+      sat: [8, 15]
+      sun: [8, 16]
     },
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
-    announcement: "Open Wednesday 11/25 8am to 12pm\nClosed Thursday and Friday",
+    announcement: "Closed Thursday and Friday\nSaturday 11/28 10AM to 3PM",
     statusOpen: "Open now until {time}",
     statusSoon: "Closing soon at {time}",
     statusOpeningSoon: "Opening soon at {time}",
