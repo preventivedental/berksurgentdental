@@ -25,13 +25,12 @@
   window.BUD_SITE_CONFIG = {
     hours: {
       sun: [8, 16],
-      // mon: [8, 16],
-      // tue: [8, 16],
+      mon: null,
+      tue: null,
       wed: [8, 12],
-      // thu: [12, 17],
-      // fri: [15, 19],
-      sat: [8, 15]
-      sun: [8, 16]
+      thu: null,
+      fri: null,
+      sat: [10, 15]
     },
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
