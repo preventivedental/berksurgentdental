@@ -30,7 +30,7 @@
       wed: null,
       thu: null,
       fri: null,
-      sat: [10, 15]
+      sat: [8, 15]
     },
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
