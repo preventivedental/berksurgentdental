@@ -34,7 +34,7 @@
     },
     closeSoonMinutes: 60,
     openSoonMinutes: 30,
-    announcement: "Closed Thursday and Friday\nSaturday 11/28 10AM to 3PM",
+    announcement: "Closed Thursday and Friday\nSaturday 11/28 8AM to 3PM",
     statusOpen: "Open now until {time}",
     statusSoon: "Closing soon at {time}",
     statusOpeningSoon: "Opening soon at {time}",
